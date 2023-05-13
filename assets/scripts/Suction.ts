@@ -1,4 +1,4 @@
-import { _decorator, Component, Enum, Node, Vec2 } from 'cc';
+import { _decorator, Component, Enum, Node, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum Direction {
@@ -12,7 +12,7 @@ export enum Direction {
 export class Suction extends Component {
 
     public pause: boolean = false;
-    public destinationPosition = new Vec2();
+    public destinationPosition = new Vec3();
 
     @property({type: Enum(Direction)})
     public direction: Direction= Direction.LEFT;  
@@ -44,7 +44,6 @@ export class Suction extends Component {
         if(this.direction === Direction.BOTTOM){
             this.destinationPosition.y -= this.speed;
         }
-
 
         this.node.setPosition(this.destinationPosition.x, this.destinationPosition.y);
     }

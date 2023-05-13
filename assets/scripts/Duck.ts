@@ -3,11 +3,8 @@ const { ccclass, property } = _decorator;
 
 import { Suction } from './Suction';
 
-@ccclass('Role')
-export class Role extends Component {
-    private x: number = 0;  
-    private y: number = 0; 
-
+@ccclass('Duck')
+export class Duck extends Component {
     private SuctionComponent: Suction;
 
     private AnimationComponent: Animation;
@@ -21,11 +18,11 @@ export class Role extends Component {
     @property
     public step: number = 100;
 
-    public destinationPosition = new Vec2();
+    public destinationPosition = new Vec3();
     
     start() {
-        this.x = this.destinationPosition.x = this.node.position.x;
-        this.y = this.destinationPosition.y = this.node.position.y;
+        this.destinationPosition.x = this.node.position.x;
+        this.destinationPosition.y = this.node.position.y;
 
         this.SuctionComponent = this.getComponent(Suction);
         this.SuctionComponent.destinationPosition = this.destinationPosition;
@@ -73,7 +70,7 @@ export class Role extends Component {
     }
 
     fly() {
-    //   this.AnimationComponent.stop();
+        this.AnimationComponent.stop();
 
         const SuctionComponent = this.SuctionComponent;
 
