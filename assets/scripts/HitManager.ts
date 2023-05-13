@@ -58,20 +58,13 @@ export class HitManager extends Component {
     addBarrierHandle:any;
     collected:number = 0;
 
-    reset() {
-        if (this.addBarrierHandle) {
-            clearTimeout(this.addBarrierHandle)
-        }
-        if (this.addCollectorHandle) {
-            clearTimeout(this.addCollectorHandle)
-        }
-        this.collectorList.forEach(node=>node.removeFromParent())
-        this.barrierList.forEach(node=>node.removeFromParent())
-        this.collectorList = [];
-        this.barrierList = [];
+    public throwSwitch = false;
 
+    reset() {
+        this.stopThrow();
         this.updateCollector(-this.collected);
     }
+
     hitTest :Record<string,Function> = {
         duck: (selfCollider,otherCollider,contact)=>{
             const hitNode = otherCollider.node;
@@ -119,6 +112,7 @@ export class HitManager extends Component {
             // PhysicsSystem2D.instance.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
         }
     }
+
     // 
     onBeginContact(selfCollider, otherCollider, contact) {
         console.log('onBeginContact');
@@ -133,33 +127,8 @@ export class HitManager extends Component {
 
     // 随机生成最多
     update(deltaTime: number) {
-
         // debugger;
-        if (this.collectorList.length < this.collectorNum) {
-            this.addCollector();
-        }
-        this.collectorList.forEach((collector) => {
-            // 根据收集物速度移动
-            collector.setPosition(new Vec3(collector.position.x - this.collectorSpeed,collector.position.y,0));
-            // 超出屏幕后销毁
-            if (collector.position.x < - width/2 -10) {
-                this.collectorList.splice(this.collectorList.indexOf(collector),1);
-                collector.removeFromParent();
-            }
-        });
-
-        if (this.barrierList.length < this.barrierNum) {
-            this.addBarrier();
-        }
-        this.barrierList.forEach((barrier) => {
-            // 根据障碍物速度移动
-            barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed,barrier.position.y,0));
-            // 超出屏幕后销毁
-            if (barrier.position.x < - width/2 -10) {
-                barrier.removeFromParent();
-                this.barrierList.splice(this.barrierList.indexOf(barrier),1);
-            }
-        });
+        this.doThrow();
     }
 
     addCollector() {
@@ -212,7 +181,58 @@ export class HitManager extends Component {
         if (this.maoLabel) {
             this.maoLabel.string = str;
         }
-        console.log('收集物数量：',this.collected);
+        // @ts-ignore
+        window.GameManager.updateCollected(this.collected)
+        
+    }
+
+    // 停止投送
+    stopThrow() {
+        this.throwSwitch = false;
+        if (this.addBarrierHandle) {
+            clearTimeout(this.addBarrierHandle)
+        }
+        if (this.addCollectorHandle) {
+            clearTimeout(this.addCollectorHandle)
+        }
+        this.collectorList.forEach(node=>node.removeFromParent())
+        this.barrierList.forEach(node=>node.removeFromParent())
+        this.collectorList = [];
+        this.barrierList = [];
+    }
+
+    // 开始投送
+    startThrow() {
+        this.throwSwitch = true;
+    }
+
+    doThrow() {
+        if (!this.throwSwitch) return;
+        if (this.collectorList.length < this.collectorNum) {
+            this.addCollector();
+        }
+        this.collectorList.forEach((collector) => {
+            // 根据收集物速度移动
+            collector.setPosition(new Vec3(collector.position.x - this.collectorSpeed,collector.position.y,0));
+            // 超出屏幕后销毁
+            if (collector.position.x < - width/2 -10) {
+                this.collectorList.splice(this.collectorList.indexOf(collector),1);
+                collector.removeFromParent();
+            }
+        });
+
+        if (this.barrierList.length < this.barrierNum) {
+            this.addBarrier();
+        }
+        this.barrierList.forEach((barrier) => {
+            // 根据障碍物速度移动
+            barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed,barrier.position.y,0));
+            // 超出屏幕后销毁
+            if (barrier.position.x < - width/2 -10) {
+                barrier.removeFromParent();
+                this.barrierList.splice(this.barrierList.indexOf(barrier),1);
+            }
+        });
     }
 }
 

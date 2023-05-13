@@ -45,6 +45,7 @@ export class PlayManager extends Component {
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.reset();
+            hitManager.startThrow();
         }
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
@@ -66,6 +67,13 @@ export class PlayManager extends Component {
     resetDuckPos() {
         if(this.duck) {
             this.duck.setPosition(new Vec3(this._startPos.x,this._startPos.y,0));
+        }
+    }
+
+    showBoss() {
+        const hitManager = this.node.getComponent(HitManager);
+        if (hitManager) {
+            hitManager.stopThrow();
         }
     }
 }
