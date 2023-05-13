@@ -1,27 +1,49 @@
 import { _decorator, Component, Node } from 'cc';
+import { LoginUiManager } from './LoginUiManager';
+import { PlayManager } from './PlayManager';
 const { ccclass, property } = _decorator;
 
+@ccclass('GameManager')
+export class GameManager extends Component {
+    @property(Node)
+    loginRoot:Node = null;
 
-class GameManager {
-    public duck: Node = null;
-
-    setDuck(duck:Node) {
-        this.duck = duck;
-    }
+    @property(Node)
+    playRoot:Node = null;
 
     start() {
+        // @ts-ignore
+        window.GameManager = this;
+    }
+
+    update(deltaTime: number) {
 
     }
 
-    stop() {
+    stopGame(win:boolean) {
         console.log('游戏结束');
         // 结束游戏
+        if (this.playRoot) {
+            this.playRoot.active = false;
+        }
+        if (this.loginRoot) {
+            this.loginRoot.active = true;
+            const loginUiManager = this.loginRoot.getComponent(LoginUiManager);
+            loginUiManager.stopGame(win);
+        }
     }
 
-    next() {
+    playGame() {
+        console.log('游戏开始');
+        // 开始游戏
+        if (this.loginRoot) {
+            this.loginRoot.active = false;
+        }
+        if (this.playRoot) {
+            this.playRoot.active = true;
+            const playManager = this.playRoot.getComponent(PlayManager);
+            playManager.play();
 
+        }
     }
 }
-
-
-export default new GameManager();

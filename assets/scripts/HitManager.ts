@@ -1,6 +1,8 @@
-import { Canvas } from 'cc';
-import { _decorator, CCInteger, Component, Node,Prefab,instantiate,Vec2 } from 'cc';
+import { _decorator, CCInteger, Component, Node,
+    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType } from 'cc';
 const { ccclass, property } = _decorator;
+
+const width = 1280;
 
 @ccclass('HitManager')
 export class HitManager extends Component {
@@ -47,27 +49,119 @@ export class HitManager extends Component {
 
     public collectorList:Node[] = [];
     public barrierList:Node[] = [];
-    
-    start() {
+    addCollectorHandle:any;
+    addBarrierHandle:any;
+    collected:number = 0;
 
+    start() {
+        if (PhysicsSystem2D.instance) {
+            PhysicsSystem2D.instance.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            PhysicsSystem2D.instance.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+            // PhysicsSystem2D.instance.on(Contact2DType.PRE_SOLVE, this.onPreSolve, this);
+            // PhysicsSystem2D.instance.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
+        }
+    }
+    // 
+    onBeginContact(selfCollider, otherCollider, contact) {
+        console.log('onBeginContact');
+        const selfNode = selfCollider.node;
+        const otherNode = otherCollider.node;
+        contact.disabled = true;
+        if (selfNode.name === 'duck') {
+            if (otherNode.name === 'collector') {
+                // 收集物
+                this.collectorList.splice(this.collectorList.indexOf(otherNode),1);
+                otherNode.removeFromParent();
+                this.collected++;
+                console.log('收集物数量：',this.collected);
+            } else if (otherNode.name === 'barrier') {
+                // 障碍物
+                this.barrierList.splice(this.barrierList.indexOf(otherNode),1);
+                otherNode.removeFromParent();
+                // @ts-ignore
+                window.GameManager.stopGame(false);
+            }
+        }
+    } 
+
+    onEndContact(selfCollider, otherCollider, contact) {
+        console.log('onEndContact');
+        debugger;
     }
 
     // 随机生成最多
     update(deltaTime: number) {
+
+        // debugger;
         if (this.collectorList.length < this.collectorNum) {
             this.addCollector();
         }
         this.collectorList.forEach((collector) => {
+            // 根据收集物速度移动
+            collector.setPosition(new Vec3(collector.position.x - this.collectorSpeed,collector.position.y,0));
+            // 超出屏幕后销毁
+            if (collector.position.x < - width/2 -10) {
+                this.collectorList.splice(this.collectorList.indexOf(collector),1);
+                collector.removeFromParent();
+            }
+        });
 
+        if (this.barrierList.length < this.barrierNum) {
+            this.addBarrier();
+        }
+        this.barrierList.forEach((barrier) => {
+            // 根据障碍物速度移动
+            barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed,barrier.position.y,0));
+            // 超出屏幕后销毁
+            if (barrier.position.x < - width/2 -10) {
+                barrier.removeFromParent();
+                this.barrierList.splice(this.barrierList.indexOf(barrier),1);
+            }
         });
     }
 
     addCollector() {
-        const collector = instantiate(this.collectorAsset);
-        this.node.addChild(collector);
-        // 随机位置
-        collector.position = new Vec2(0,0);
-        this.collectorList.push(collector);
+        if (this.addCollectorHandle) {
+            return;
+        }
+        // 1秒内随机时间生成一个收集物
+        this.addCollectorHandle = setTimeout(() => {
+            const collector = instantiate(this.collectorAsset);
+            this.canvas?.addChild(collector);
+            
+            const y = this.getY();
+            collector.setPosition(new Vec3(width/2,y,0));// 都从右边出来
+            this.collectorList.push(collector);
+            this.addCollectorHandle = null;
+        },this.random() * 1000);
+    }
+
+    addBarrier() {
+        // 1秒内随机时间生成一个障碍物
+        if (this.addBarrierHandle) {
+            return;
+        }
+        this.addBarrierHandle = setTimeout(() => {
+            const barrier = instantiate(this.barrierAsset);
+            const y = this.getY();
+            barrier.setPosition(new Vec3(width/2,y,0));// 都从右边出来
+            this.canvas?.addChild(barrier);
+            this.barrierList.push(barrier);
+            this.addBarrierHandle = null;
+        },this.random() * 1000);
+    }
+
+    // 生成[-360,360]y轴随机位置
+    getY() {
+        return this.random() * 680 - 340;
+    }
+
+    // return 0-1
+    random() {
+        // 生成[0,1]的随机数
+        const random = Math.random();
+        // console.log('随机数',random);
+        return random;
     }
 }
 
