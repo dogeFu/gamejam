@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2, Vec3,director } from 'cc';
+import { _decorator, Component, Node, Vec2, Vec3, director } from 'cc';
 import {  HitManager } from './HitManager';
 import { Background } from './Background';
 import { Duck } from './Duck';
@@ -31,6 +31,13 @@ export class PlayManager extends Component {
         
     }
 
+    stop(){ 
+        const backgroundComp =  director.getScene().getComponentInChildren(Background);
+        if (backgroundComp) {
+            backgroundComp.stop();
+        }
+    }
+
     play() {
         // 重置所有组件的状态;
         console.log('开始游戏,重置状态')
@@ -42,6 +49,7 @@ export class PlayManager extends Component {
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
             backgroundComp.reset();
+            backgroundComp.play();
         }
 
         const duckComp = this.duck?.getComponent(Duck);

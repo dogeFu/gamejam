@@ -25,6 +25,8 @@ export class GameManager extends Component {
         // 结束游戏
         if (this.playRoot) {
             this.playRoot.active = false;
+            const playManager = this.playRoot.getComponent(PlayManager);
+            playManager.stop();
         }
         if (this.loginRoot) {
             this.loginRoot.active = true;
@@ -43,7 +45,6 @@ export class GameManager extends Component {
             this.playRoot.active = true;
             const playManager = this.playRoot.getComponent(PlayManager);
             playManager.play();
-
         }
     }
 }

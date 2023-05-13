@@ -10,6 +10,8 @@ export class Background extends Component {
     private initX: number = 0;  
     private initY: number = 0; 
 
+    public pause: boolean = true; 
+
     @property
     public speed: number = 1;  
 
@@ -24,6 +26,10 @@ export class Background extends Component {
     }
 
     update(deltaTime: number) {
+        if(this.pause) {
+            return;
+        }
+
         if(this.initX - this.x < this.left) {
             this.x -= this.speed;
         } else {
@@ -51,6 +57,16 @@ export class Background extends Component {
         this.x = this.initX;
         this.y = this.initY
         this.top = this.maxTop;
+
+        this.stop();
+    }
+
+    play() {
+        this.pause = false;
+    }
+
+    stop() {
+        this.pause = true;
     }
 }
 
