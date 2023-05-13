@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, Vec3, tween } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Background')
@@ -10,13 +10,12 @@ export class Background extends Component {
     private initX: number = 0;  
     private initY: number = 0; 
 
-    public pause: boolean = true; 
+    public pause: boolean = true;
 
     @property
-    public speed: number = 1;  
+    public speed: number = 1;
 
     private maxTop = 2160;
-    public left: number = 0;
     public top: number = 0;
 
     start() {
@@ -30,12 +29,6 @@ export class Background extends Component {
             return;
         }
 
-        if(this.initX - this.x < this.left) {
-            this.x -= this.speed;
-        } else {
-            this.x += this.speed;
-        }
-
         if(this.initY - this.y < this.top) {
             this.y -= this.speed;
         } else {
@@ -43,10 +36,6 @@ export class Background extends Component {
         }
 
         this.node.setPosition(this.x, this.y);
-    }
-
-    setLeft(value: number) {
-        this.left = value;
     }
 
     setTop(value: number) {
@@ -63,10 +52,25 @@ export class Background extends Component {
 
     play() {
         this.pause = false;
+
+        setTimeout(()=>{
+            this.toBoss();
+        },1000)
     }
 
     stop() {
         this.pause = true;
+    }
+
+    toBoss() {
+        this.stop();
+
+        tween(this.node.position).to(1, new Vec3(this.initX, this.initY - this.maxTop, 0), {
+            easing: "sineOut",
+            onUpdate: (target: Vec3, ratio: number) => {
+                this.node.position = target;
+            },
+        }).start();
     }
 }
 
