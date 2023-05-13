@@ -1,4 +1,4 @@
-import { _decorator, Component, Node,Prefab,instantiate,Vec3, CCInteger } from 'cc';
+import { _decorator, Component, Node,Prefab,instantiate,Vec3, CCInteger, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Attack')
@@ -13,9 +13,14 @@ export class Attack extends Component {
         type:CCInteger,
         tooltip:'发射速度'
     })
-    speed:number = 1;
+    speed:number = 10;
+
+    // boss在右上角
+    @property(Vec2) 
+    targetPos:Vec2 = new Vec2(1280/2,720/2);
 
     weaponNode:Node = null;
+
     start() {
 
     }
@@ -23,9 +28,18 @@ export class Attack extends Component {
     update(deltaTime: number) {
         if (this.weaponNode) {
             // 更新位置
-            const offset = deltaTime * this.speed;
-            const pos = this.weaponNode.position;
-            this.weaponNode.setPosition(new Vec3(pos.x+offset,pos.y,0));
+            const offset = this.speed;
+            const pos = this.node.getWorldPosition();
+            const dir = new Vec2(this.targetPos).subtract(new Vec2(pos.x,pos.y));
+            const radio = dir.y/dir.x;
+            const weaponPos = this.weaponNode.position;
+            this.weaponNode.setPosition(new Vec3(weaponPos.x+offset,weaponPos.y+radio*offset,0));
+            // const x = pos.x + weaponPos.x;
+            // const y = pos.y + weaponPos.y;
+            // if (x > 1280/2 || y > 720/2) {
+            //     this.weaponNode.removeFromParent();
+            //     this.weaponNode = null;
+            // }
         }
     }
 
