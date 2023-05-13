@@ -58,6 +58,59 @@ export class HitManager extends Component {
     addBarrierHandle:any;
     collected:number = 0;
 
+    reset() {
+        if (this.addBarrierHandle) {
+            clearTimeout(this.addBarrierHandle)
+        }
+        if (this.addCollectorHandle) {
+            clearTimeout(this.addCollectorHandle)
+        }
+        this.collectorList.forEach(node=>node.removeFromParent())
+        this.barrierList.forEach(node=>node.removeFromParent())
+        this.collectorList = [];
+        this.barrierList = [];
+
+        this.updateCollector(-this.collected);
+    }
+    hitTest :Record<string,Function> = {
+        duck: (selfCollider,otherCollider,contact)=>{
+            const hitNode = otherCollider.node;
+            if(hitNode.name === 'collector') {
+                // 收集物
+                this.hitCollector(hitNode);
+            }else if(hitNode.name === 'barrier') {
+                this.hitBarrier(hitNode);
+            }
+        },
+        collector:(selfCollider,otherCollider,contact)=>{
+            const hitNode = otherCollider.node
+            if(hitNode.name === 'duck') {
+                this.hitCollector(selfCollider.node)
+            }
+        },
+        barrier:(selfCollider,otherCollider,contact)=>{
+            const hitNode = otherCollider.node
+            if(hitNode.name === 'duck') {
+                this.hitBarrier(selfCollider.node)
+            }
+        },
+    }
+
+    hitCollector(collector:Node) {
+        this.collectorList.splice(this.collectorList.indexOf(collector),1);
+        collector.removeFromParent();
+        this.updateCollector(1);
+        
+    }
+
+    hitBarrier(barrier:Node) {
+        // 障碍物
+        this.barrierList.splice(this.barrierList.indexOf(barrier),1);
+        barrier.removeFromParent();
+        // @ts-ignore
+        window.GameManager.stopGame(false);
+    }
+
     start() {
         if (PhysicsSystem2D.instance) {
             PhysicsSystem2D.instance.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
@@ -70,24 +123,8 @@ export class HitManager extends Component {
     onBeginContact(selfCollider, otherCollider, contact) {
         console.log('onBeginContact');
         const selfNode = selfCollider.node;
-        const otherNode = otherCollider.node;
-        contact.disabled = true;
-        if (selfNode.name === 'duck') {
-            if (otherNode.name === 'collector') {
-                // 收集物
-                this.collectorList.splice(this.collectorList.indexOf(otherNode),1);
-                otherNode.removeFromParent();
-                this.collected++;
-                console.log('收集物数量：',this.collected);
-            } else if (otherNode.name === 'barrier') {
-                // 障碍物
-                this.barrierList.splice(this.barrierList.indexOf(otherNode),1);
-                otherNode.removeFromParent();
-                // @ts-ignore
-                window.GameManager.stopGame(false);
-            }
-        }
-    } 
+        this.hitTest[selfNode.name]?.(selfCollider, otherCollider, contact)
+    }
 
     onEndContact(selfCollider, otherCollider, contact) {
         console.log('onEndContact');
@@ -175,6 +212,7 @@ export class HitManager extends Component {
         if (this.maoLabel) {
             this.maoLabel.string = str;
         }
+        console.log('收集物数量：',this.collected);
     }
 }
 
