@@ -1,5 +1,4 @@
 import { _decorator, Component, Node, Vec3,CCBoolean, CCInteger } from 'cc';
-import  GameManager  from './../GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BoundChecker')
@@ -20,10 +19,11 @@ export class BoundChecker extends Component {
     }
 
     update(deltaTime: number) {
-        this.target.position = new Vec3(this.target.position.x, this.target.position.y - 10,0)
+        // this.target.position = new Vec3(this.target.position.x, this.target.position.y - 10,0)
         const pos = this.target.position;
         if (pos.y < this.bottom || pos.y > this.top) {
-            GameManager.stop()
+            // @ts-ignore
+            window.GameManager.stopGame(false)
         }
     }
 }
