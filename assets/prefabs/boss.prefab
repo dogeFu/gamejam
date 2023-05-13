@@ -215,11 +215,18 @@
     "__prefab": {
       "__id__": 11
     },
-    "weapon": {
-      "__uuid__": "d237b541-2c3b-4285-b53b-c025f862e2c8",
+    "bullet": {
+      "__uuid__": "101e3cf1-38f1-4d92-8638-0f889ae8addd",
       "__expectedType__": "cc.Prefab"
     },
-    "speed": 1,
+    "speed": 15,
+    "maxBulletCount": 4,
+    "area": {
+      "__type__": "cc.Vec2",
+      "x": 200,
+      "y": 200
+    },
+    "duckNode": null,
     "_id": ""
   },
   {

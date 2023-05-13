@@ -4,6 +4,12 @@ const { ccclass, property } = _decorator;
 @ccclass('Attack')
 export class Attack extends Component {
     @property({
+        type:Node,
+        tooltip:'根节点，用来挂子弹'
+    })
+    root:Node = null;
+
+    @property({
         type:Prefab,
         tooltip:'武器预制体'
     })
@@ -15,9 +21,11 @@ export class Attack extends Component {
     })
     speed:number = 10;
 
-    // boss在右上角
-    @property(Vec2) 
-    targetPos:Vec2 = new Vec2(1280/2,720/2);
+    @property({
+        type:Node,
+        tooltip:'boss节点'
+    })
+    bossBode:Node = null;
 
     weaponNode:Node = null;
 
@@ -29,25 +37,27 @@ export class Attack extends Component {
         if (this.weaponNode) {
             // 更新位置
             const offset = this.speed;
-            const pos = this.node.getWorldPosition();
-            const dir = new Vec2(this.targetPos).subtract(new Vec2(pos.x,pos.y));
+            // 人物位置
+            const pos = this.node.position;
+            const bossPos = this.bossBode.position;
+            const dir = new Vec3(bossPos).subtract(pos);
             const radio = dir.y/dir.x;
             const weaponPos = this.weaponNode.position;
             this.weaponNode.setPosition(new Vec3(weaponPos.x+offset,weaponPos.y+radio*offset,0));
-            // const x = pos.x + weaponPos.x;
-            // const y = pos.y + weaponPos.y;
-            // if (x > 1280/2 || y > 720/2) {
-            //     this.weaponNode.removeFromParent();
-            //     this.weaponNode = null;
-            // }
+            const x = weaponPos.x;
+            const y = weaponPos.y;
+            if (x > 1280/2 || y > 720/2) {
+                this.weaponNode.removeFromParent();
+                this.weaponNode = null;
+            }
         }
     }
 
     shot() {
         if (!this.weaponNode) {
             this.weaponNode = instantiate(this.weapon);
-            this.weaponNode.parent = this.node;
-            this.weaponNode.position = new Vec3(0,0,0);
+            this.weaponNode.parent = this.root;
+            this.weaponNode.position = new Vec3(this.node.position);
         }
     }
 
