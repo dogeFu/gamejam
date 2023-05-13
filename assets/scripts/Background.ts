@@ -13,8 +13,11 @@ export class Background extends Component {
     @property
     public speed: number = 1;  
 
+    @property
     public left: number = 0;
-    public top: number = 100;
+
+    @property
+    public top: number = 2880;
 
     start() {
         this.x = this.initX = this.node.position.x;
