@@ -19,6 +19,7 @@ export class Duck extends Component {
     public step: number = 100;
 
     public destinationPosition = new Vec3();
+
     
     start() {
         this.SuctionComponent = this.getComponent(Suction);
@@ -53,23 +54,25 @@ export class Duck extends Component {
     resetDestinationPosition() {
         this.destinationPosition.x = this.node.position.x;
         this.destinationPosition.y = this.node.position.y;
-        this.SuctionComponent.pause = false;
+        if(this.SuctionComponent) {
+            this.SuctionComponent.pause = false;
+        }
     }
 
     flyUp() {
-        this.destinationPosition.y += this.step;
+        this.destinationPosition.y = this.node.position.y + this.step;
         this.fly();
     }
     flyDown() {
-        this.destinationPosition.y -= this.step;
+        this.destinationPosition.y = this.node.position.y - this.step;
         this.fly();
     }
     flyLeft() {
-        this.destinationPosition.x -= this.step;
+        this.destinationPosition.x = this.node.position.x - this.step;
         this.fly();
     }
     flyRight() {
-        this.destinationPosition.x += this.step;
+        this.destinationPosition.x = this.node.position.x + this.step;
         this.fly();
     }
     fly() {
