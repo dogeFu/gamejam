@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Vec3,CCBoolean, CCInteger } from 'cc';
-import  GameManager  from './../GameManager';
+import  GameManager  from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BoundChecker')
