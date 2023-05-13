@@ -1,4 +1,4 @@
-import { _decorator, Component, Node,Prefab,instantiate,Vec3, CCInteger, Vec2 } from 'cc';
+import { _decorator, Component, Node,Prefab,instantiate,Vec3, CCInteger, Collider2D,Contact2DType } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Attack')
@@ -47,8 +47,7 @@ export class Attack extends Component {
             const x = weaponPos.x;
             const y = weaponPos.y;
             if (x > 1280/2 || y > 720/2) {
-                this.weaponNode.removeFromParent();
-                this.weaponNode = null;
+                this.hideWeapon(false);
             }
         }
     }
@@ -58,12 +57,36 @@ export class Attack extends Component {
             this.weaponNode = instantiate(this.weapon);
             this.weaponNode.parent = this.root;
             this.weaponNode.position = new Vec3(this.node.position);
+            // 获取duck节点的碰撞组件
+            const collider = this.weaponNode.getComponent(Collider2D);
+            if (collider){
+                collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            }
         }
     }
 
-    // 击中boss时移除武器
-    onHit() {
-
+    // 击中boss或者boss武器时取消;
+    onBeginContact(selfCollider, otherCollider, contact) {
+        console.log('onBeginContact');
+        
+        const selfNode = selfCollider.node;
+        let otherNode = otherCollider.node;
+        if (selfNode === this.weaponNode || otherNode === this.weaponNode){
+            otherNode = selfNode === this.weaponNode ? otherNode : selfNode;
+        }
+        console.log('duck 武器命中目标',otherNode.name);
+        if(otherNode.name === 'boss' || otherNode.name=== 'bossWeapon') {
+            contact.disable = true;
+            this.hideWeapon(otherNode.name === 'boss');
+        }
+    }
+    hideWeapon(hit:boolean) {
+        this.weaponNode.removeFromParent();
+        this.weaponNode = null;
+        if(hit) {
+            // 击中目标要更新状态
+            console.log('击中boss');
+        }
     }
 }
 

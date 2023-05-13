@@ -68,6 +68,7 @@ export class HitManager extends Component {
     hitTest :Record<string,Function> = {
         duck: (selfCollider,otherCollider,contact)=>{
             const hitNode = otherCollider.node;
+            contact.disable = true;
             if(hitNode.name === 'collector') {
                 // 收集物
                 this.hitCollector(hitNode);
@@ -87,6 +88,7 @@ export class HitManager extends Component {
                 this.hitBarrier(selfCollider.node)
             }
         },
+
     }
 
     hitCollector(collector:Node) {
@@ -122,7 +124,7 @@ export class HitManager extends Component {
 
     onEndContact(selfCollider, otherCollider, contact) {
         console.log('onEndContact');
-        debugger;
+        // debugger;
     }
 
     // 随机生成最多

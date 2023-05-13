@@ -1,4 +1,4 @@
-import { _decorator, Component, Node,Prefab,instantiate,Vec3,Vec2, CCInteger } from 'cc';
+import { _decorator, Component, Node,Prefab,instantiate,Vec3,Vec2, CCInteger,Collider2D,Contact2DType } from 'cc';
 const { ccclass, property } = _decorator;
 
 const radio = 720/1280;
@@ -44,7 +44,7 @@ export class BossAttack extends Component {
     duckNode:Node = null;
 
     start() {
-
+        // 给boss添加
     }
 
     update(deltaTime: number) {
@@ -62,6 +62,22 @@ export class BossAttack extends Component {
                 const pos = this.getStartPos();
                 weapon.setPosition(pos);// 都从右边出来
                 this.weaponList.push(weapon);
+                // 获取duck节点的碰撞组件
+                const collider = weapon.getComponent(Collider2D);
+                if (collider){
+                    collider.on(Contact2DType.BEGIN_CONTACT,(selfCollider, otherCollider, contact)=>{
+                        const selfNode = selfCollider.node;
+                        let otherNode = otherCollider.node;
+                        if (selfNode === weapon || otherNode === weapon){
+                            otherNode = selfNode === weapon ? otherNode : selfNode;
+                        }
+                        if(otherNode.name === 'duck' || otherNode.name === 'weapon') {
+                            console.log('boss 武器命中duck');
+                            this.hideWeapon(weapon);
+                            contact.disable = true;
+                        }
+                    }, this);
+                }
                 this.handle = null;
             },Math.random()*this.timeout)
         }
@@ -81,11 +97,15 @@ export class BossAttack extends Component {
             weapon.setPosition(new Vec3(weapon.position.x - offset,weapon.position.y - offset*radio,0));
             // 超出屏幕后销毁
             if (weapon.position.x < - 1280/2 -10 || weapon.position.y < -720/2 -10) {
-                weapon.removeFromParent();
-                this.weaponList.splice(this.weaponList.indexOf(weapon),1);
-                console.log('移除boss子弹');
+                this.hideWeapon(weapon);
             }
         })
+    }
+
+    hideWeapon(weapon:Node) {
+        weapon.removeFromParent();
+        this.weaponList.splice(this.weaponList.indexOf(weapon),1);
+        console.log('移除boss子弹');
     }
 }
 
