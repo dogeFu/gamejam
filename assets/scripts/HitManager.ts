@@ -1,11 +1,16 @@
 import { _decorator, CCInteger, Component, Node,
-    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType } from 'cc';
+    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,Label } from 'cc';
 const { ccclass, property } = _decorator;
 
 const width = 1280;
 
 @ccclass('HitManager')
 export class HitManager extends Component {
+    @property({
+        type:Label
+    })
+    maoLabel:Label = null;
+
     @property({
         type:Node
     })
@@ -162,6 +167,14 @@ export class HitManager extends Component {
         const random = Math.random();
         // console.log('随机数',random);
         return random;
+    }
+
+    updateCollector(count:number) {
+        this.collected+=count;
+        const str = `X ${this.collected}`
+        if (this.maoLabel) {
+            this.maoLabel.string = str;
+        }
     }
 }
 
