@@ -90,6 +90,10 @@ export class Duck extends Component {
 
       this.AnimationComponent.play();
     }
+
+    reset() {
+        this.resetDestinationPosition()
+    }
 }
 
 

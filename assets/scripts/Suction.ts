@@ -7,7 +7,7 @@ export enum Direction {
     BOTTOM,
     LEFT
 }
-
+let pos = new Vec3();
 @ccclass('Suction')
 export class Suction extends Component {
 
@@ -28,24 +28,28 @@ export class Suction extends Component {
         if(this.pause) {
             return;
         }
-
+        pos.set(this.node.position);
         if(this.direction === Direction.RIGHT){
-            this.destinationPosition.x += this.speed;
+            pos.x += this.speed;
         }
 
         if(this.direction === Direction.LEFT){
-            this.destinationPosition.x -= this.speed;
+            pos.x -= this.speed;
         }
 
         if(this.direction === Direction.TOP){
-            this.destinationPosition.y += this.speed;
+            pos.y += this.speed;
         }
 
         if(this.direction === Direction.BOTTOM){
-            this.destinationPosition.y -= this.speed;
+            pos.y -= this.speed;
         }
 
-        this.node.setPosition(this.destinationPosition.x, this.destinationPosition.y);
+        this.node.setPosition(pos.x, pos.y);
+    }
+
+    reset() {
+        // this.destinationPosition = new Vec3();
     }
 }
 

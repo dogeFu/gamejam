@@ -1,5 +1,8 @@
 import { _decorator, Component, Node, Vec2, Vec3 } from 'cc';
 import {  HitManager } from './HitManager';
+import { Background } from './Background';
+import { Duck } from './Duck';
+import { Suction } from './Suction';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayManager')
@@ -35,6 +38,21 @@ export class PlayManager extends Component {
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.reset();
+        }
+        const background = this.node.getChildByName('Background');
+        const comp = background.getComponent(Background);
+        if (comp) {
+            comp.setTop(0)
+        }
+
+        const duckComp = this.duck?.getComponent(Duck);
+        if (duckComp) {
+            duckComp.reset();
+        }
+
+        const suctionComp = this.duck?.getComponent(Suction);
+        if (suctionComp) {
+            suctionComp.reset();
         }
     }
 
