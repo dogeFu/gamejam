@@ -122,8 +122,8 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.5,
-      "y": 0.5,
+      "x": 0.3,
+      "y": 0.3,
       "z": 1
     },
     "_mobility": 0,
@@ -1033,13 +1033,13 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 3.7,
+      "y": 19
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 36
+      "width": 83.1,
+      "height": 119.7
     },
     "_id": ""
   },
@@ -1131,7 +1131,7 @@
       "__id__": 53
     },
     "weapon": {
-      "__uuid__": "1aa28b1a-3351-42c1-b73e-a87e608985ab",
+      "__uuid__": "445daf16-2e86-4fa2-b4fa-84aeb92a520b",
       "__expectedType__": "cc.Prefab"
     },
     "speed": 1,
