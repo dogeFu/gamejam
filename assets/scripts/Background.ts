@@ -17,7 +17,7 @@ export class Background extends Component {
     public left: number = 0;
 
     @property
-    public top: number = 2880;
+    public top: number = 2160;
 
     start() {
         this.x = this.initX = this.node.position.x;
@@ -25,17 +25,19 @@ export class Background extends Component {
     }
 
     update(deltaTime: number) {
-        if(this.initX - this.x < this.left){
+        if(this.initX - this.x < this.left) {
             this.x -= this.speed;
-        }else{
+        } else {
             this.x += this.speed;
         }
 
-        if(this.initY - this.y < this.top){
+        if(this.initY - this.y < this.top) {
             this.y -= this.speed;
-        }else{
+        } else {
             this.y += this.speed;
         }
+
+        this.node.setPosition(this.x, this.y);
     }
 
     setLeft(value: number) {
