@@ -211,15 +211,13 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": {
       "__id__": 11
     },
-    "weapon": {
-      "__uuid__": "d237b541-2c3b-4285-b53b-c025f862e2c8",
-      "__expectedType__": "cc.Prefab"
-    },
+    "bullet": null,
     "speed": 1,
+    "maxBulletCount": 1,
     "_id": ""
   },
   {
