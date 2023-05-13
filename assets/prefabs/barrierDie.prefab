@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "barrier",
+    "_name": "barrierDie",
     "_objFlags": 0,
     "_native": "",
     "data": {
@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "barrier",
+    "_name": "barrierDie",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -77,8 +77,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 59,
-      "height": 49
+      "width": 241,
+      "height": 194
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -113,7 +113,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "ab531ac6-d0e6-49a2-8d1d-8c443658411b@f9941",
+      "__uuid__": "dd43adf7-e43e-40ea-8355-052d4c531ce6@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -147,7 +147,7 @@
       "__id__": 7
     },
     "tag": 0,
-    "_group": 1,
+    "_group": 4,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -159,8 +159,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 59,
-      "height": 49
+      "width": 241,
+      "height": 194
     },
     "_id": ""
   },

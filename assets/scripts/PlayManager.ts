@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2, Vec3, director,CCInteger,Label } from 'cc';
+import { _decorator, Component, Node, Vec2, Vec3, director,CCInteger,Label,Animation } from 'cc';
 import {  HitManager } from './HitManager';
 import { Background } from './Background';
 import { Duck } from './Duck';
@@ -53,10 +53,15 @@ export class PlayManager extends Component {
         
     }
 
-    stop(){ 
+    stop(win:boolean) { 
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
             backgroundComp.stop();
+        }
+        if(!win) {
+            // 播放死亡动画
+            this.playDuckAnim('die')
+            // 可能要等播完再往下执行
         }
     }
 
@@ -65,6 +70,7 @@ export class PlayManager extends Component {
         console.log('开始游戏,重置状态')
         this.duckWeaponCount = 0;
         this.resetDuckPos();
+        this.playDuckAnim('fly');
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.reset();
@@ -158,6 +164,7 @@ export class PlayManager extends Component {
         }
     }
 
+    // 
     duckAttack() {
         if(this.duckWeaponCount > 1) {
             this.duckWeaponCount--;
@@ -165,9 +172,21 @@ export class PlayManager extends Component {
                 const str = `X ${this.duckWeaponCount}`
                 this.maoLabel.string = str;
             }
+            this.playDuckAnim('attack');
+            // todo 如果小于0且没击中则stopGame;
+    
         }else {
             // @ts-ignore
             window.GameManager.stopGame(false);
+        }
+    }
+
+    playDuckAnim(name:string) {
+        if (this.duck) {
+            const animation = this.duck.getComponentInChildren(Animation);
+            if (animation) {
+                animation.play(name)
+            }
         }
     }
 }

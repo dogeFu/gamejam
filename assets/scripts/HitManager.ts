@@ -15,9 +15,15 @@ export class HitManager extends Component {
 
     @property({
         type:Prefab,
-        tooltip:'障碍物预制体'
+        tooltip:'障碍物-减羽毛'
     })
     barrierAsset:Prefab = null;
+
+    @property({
+        type:Prefab,
+        tooltip:'障碍物-死亡'
+    })
+    barrierDieAsset:Prefab = null;
 
     @property({
         type:CCInteger,
@@ -48,7 +54,7 @@ export class HitManager extends Component {
     addCollectorHandle:any;
     addBarrierHandle:any;
     collected:number = 0;
-
+    barrierDieNode :Node = null;
     public throwSwitch = false;
 
     reset() {
@@ -64,7 +70,9 @@ export class HitManager extends Component {
                 // 收集物
                 this.hitCollector(hitNode);
             }else if(hitNode.name === 'barrier') {
-                this.hitBarrier(hitNode);
+                this.hitBarrier(hitNode,false);
+            }else if (hitNode.name === 'barrierDie') {
+                this.hitBarrier(hitNode,true);
             }
         },
         collector:(selfCollider,otherCollider,contact)=>{
@@ -76,10 +84,15 @@ export class HitManager extends Component {
         barrier:(selfCollider,otherCollider,contact)=>{
             const hitNode = otherCollider.node
             if(hitNode.name === 'duck') {
-                this.hitBarrier(selfCollider.node)
+                this.hitBarrier(selfCollider.node,false)
             }
         },
-
+        barrierDie:(selfCollider,otherCollider,contact)=>{
+            const hitNode = otherCollider.node
+            if(hitNode.name === 'duck') {
+                this.hitBarrier(selfCollider.node,true)
+            }
+        },
     }
 
     hitCollector(collector:Node) {
@@ -89,12 +102,18 @@ export class HitManager extends Component {
         
     }
 
-    hitBarrier(barrier:Node) {
+    hitBarrier(barrier:Node,die:boolean) {
         // 障碍物
         this.barrierList.splice(this.barrierList.indexOf(barrier),1);
         barrier.removeFromParent();
-        // @ts-ignore
-        window.GameManager.stopGame(false);
+
+        if (die) {
+            // @ts-ignore
+            window.GameManager.stopGame(false);
+        }else {
+            // 羽毛减1
+            this.updateCollector(-1);
+        }
     }
 
     start() {
@@ -153,6 +172,18 @@ export class HitManager extends Component {
             this.barrierList.push(barrier);
             this.addBarrierHandle = null;
         },this.random() * 1000);
+        
+        // 生产会挂掉的障碍物
+        setTimeout(() => {
+            if (!this.throwSwitch) return;
+            if (!this.barrierDieNode && this.barrierDieAsset) {
+                const barrier = instantiate(this.barrierDieAsset);
+                const y = this.getY();
+                barrier.setPosition(new Vec3(width/2,y,0));// 都从右边出来
+                this.node?.addChild(barrier);
+                this.barrierDieNode = barrier;
+            }
+        },this.random() * 2000);
     }
 
     // 生成[-360,360]y轴随机位置
@@ -172,7 +203,6 @@ export class HitManager extends Component {
         this.collected+=count;
         // @ts-ignore
         window.PlayManager?.updateCollected(this.collected)
-        
     }
 
     // 停止投送
@@ -188,6 +218,10 @@ export class HitManager extends Component {
         this.barrierList.forEach(node=>node.removeFromParent())
         this.collectorList = [];
         this.barrierList = [];
+        if (this.barrierDieNode) {
+            this.barrierDieNode.removeFromParent();
+            this.barrierDieNode = null;
+        }
     }
 
     // 开始投送
@@ -222,6 +256,16 @@ export class HitManager extends Component {
                 this.barrierList.splice(this.barrierList.indexOf(barrier),1);
             }
         });
+
+        if(this.barrierDieNode) {
+            const barrier = this.barrierDieNode;
+            barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed/2,barrier.position.y,0));
+            // 超出屏幕后销毁
+            if (barrier.position.x < - width/2 -10) {
+                barrier.removeFromParent();
+                this.barrierDieNode = null;
+            }
+        }
     }
 }
 

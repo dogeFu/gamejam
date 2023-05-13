@@ -1297,6 +1297,10 @@
       "__uuid__": "d237b541-2c3b-4285-b53b-c025f862e2c8",
       "__expectedType__": "cc.Prefab"
     },
+    "barrierDieAsset": {
+      "__uuid__": "f9d42853-85c7-4f3e-b5f5-9ec74947edb2",
+      "__expectedType__": "cc.Prefab"
+    },
     "collectorNum": 3,
     "collectorSpeed": 10,
     "barrierNum": 3,

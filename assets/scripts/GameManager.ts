@@ -28,7 +28,7 @@ export class GameManager extends Component {
         if (this.playRoot) {
             this.playRoot.active = false;
             const playManager = this.playRoot.getComponent(PlayManager);
-            playManager.stop();
+            playManager.stop(win);
         }
         if (this.loginRoot) {
             this.loginRoot.active = true;
