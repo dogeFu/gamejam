@@ -26,8 +26,6 @@ export class Duck extends Component {
         this.SuctionComponent.destinationPosition = this.destinationPosition;
         this.resetDestinationPosition();
 
-        this.AnimationComponent = this.getComponent(Animation);
-
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
     onDestroy() {
@@ -76,8 +74,6 @@ export class Duck extends Component {
         this.fly();
     }
     fly() {
-        this.AnimationComponent.stop();
-
         const DUCK = this;
         this.SuctionComponent.pause = true;
 
@@ -90,8 +86,6 @@ export class Duck extends Component {
                 DUCK.resetDestinationPosition();
             },
         }).start();
-
-      this.AnimationComponent.play();
     }
 
     reset() {
