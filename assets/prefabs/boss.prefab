@@ -211,13 +211,22 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": {
       "__id__": 11
     },
-    "bullet": null,
-    "speed": 1,
-    "maxBulletCount": 1,
+    "bullet": {
+      "__uuid__": "101e3cf1-38f1-4d92-8638-0f889ae8addd",
+      "__expectedType__": "cc.Prefab"
+    },
+    "speed": 15,
+    "maxBulletCount": 4,
+    "area": {
+      "__type__": "cc.Vec2",
+      "x": 200,
+      "y": 200
+    },
+    "duckNode": null,
     "_id": ""
   },
   {
