@@ -6,15 +6,6 @@ const width = 1280;
 
 @ccclass('HitManager')
 export class HitManager extends Component {
-    @property({
-        type:Label
-    })
-    maoLabel:Label = null;
-
-    @property({
-        type:Node
-    })
-    canvas:Node = null;
 
     @property({
         type:Prefab,
@@ -140,7 +131,7 @@ export class HitManager extends Component {
         // 1秒内随机时间生成一个收集物
         this.addCollectorHandle = setTimeout(() => {
             const collector = instantiate(this.collectorAsset);
-            this.canvas?.addChild(collector);
+            this.node?.addChild(collector);
             
             const y = this.getY();
             collector.setPosition(new Vec3(width/2,y,0));// 都从右边出来
@@ -158,7 +149,7 @@ export class HitManager extends Component {
             const barrier = instantiate(this.barrierAsset);
             const y = this.getY();
             barrier.setPosition(new Vec3(width/2,y,0));// 都从右边出来
-            this.canvas?.addChild(barrier);
+            this.node?.addChild(barrier);
             this.barrierList.push(barrier);
             this.addBarrierHandle = null;
         },this.random() * 1000);
@@ -179,12 +170,8 @@ export class HitManager extends Component {
 
     updateCollector(count:number) {
         this.collected+=count;
-        const str = `X ${this.collected}`
-        if (this.maoLabel) {
-            this.maoLabel.string = str;
-        }
         // @ts-ignore
-        window.GameManager.updateCollected(this.collected)
+        window.PlayManager?.updateCollected(this.collected)
         
     }
 

@@ -11,8 +11,7 @@ export class GameManager extends Component {
     @property(Node)
     playRoot:Node = null;
 
-    @property(CCInteger)
-    collectTarget:number = 3;
+
 
     start() {
         // @ts-ignore
@@ -46,28 +45,13 @@ export class GameManager extends Component {
         }
         if (this.playRoot) {
             this.playRoot.active = true;
-            const playManager = this.playRoot.getComponent(PlayManager);
-            playManager.play();
+            setTimeout(()=>{
+
+                const playManager = this.playRoot.getComponent(PlayManager);
+                playManager.play();
+            })
         }
     }
 
-    updateCollected(count :number) {
-        console.log('收集物数量：',count);
-        if (count >= this.collectTarget) {
-            if (this.playRoot) {
-                this.playRoot.active = true;
-                const hit = this.playRoot.getComponent('HitManager');
-                if (hit) {
-                    // @ts-ignore
-                    hit.stopThrow()
-                }
-                setTimeout(()=>{
-                    const boss = this.playRoot.getChildByName('boss')
-                    if (boss) {
-                        boss.active = true;
-                    }
-                })
-            }
-        }
-    }
+    
 }

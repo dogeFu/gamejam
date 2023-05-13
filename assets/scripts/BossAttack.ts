@@ -1,4 +1,4 @@
-import { _decorator, Component, Node,Prefab,instantiate,Vec3,Vec2, CCInteger,Collider2D,Contact2DType } from 'cc';
+import { _decorator, Component, Node,Prefab,instantiate,Vec3,Vec2, CCInteger,Collider2D,Contact2DType,Label } from 'cc';
 const { ccclass, property } = _decorator;
 
 const radio = 720/1280;
@@ -44,7 +44,24 @@ export class BossAttack extends Component {
     duckNode:Node = null;
 
     start() {
-        // 给boss添加
+        // 给boss添加碰撞回调
+        const collider = this.node.getComponent(Collider2D);
+        if (collider){
+            collider.on(Contact2DType.BEGIN_CONTACT,this.onBeginB, this);
+        }
+    }
+
+    onBeginB(selfCollider, otherCollider, contact) {
+        const selfNode = selfCollider.node;
+        let otherNode = otherCollider.node;
+        const boss = this.node
+        if (selfNode === boss || otherNode === boss){
+            otherNode = selfNode === boss ? otherNode : selfNode;
+        }
+        if(otherNode.name === 'weapon') {
+            // @ts-ignore
+            window.PlayManager.onBossHit();
+        }
     }
 
     update(deltaTime: number) {
@@ -106,6 +123,13 @@ export class BossAttack extends Component {
         weapon.removeFromParent();
         this.weaponList.splice(this.weaponList.indexOf(weapon),1);
         console.log('移除boss子弹');
+    }
+
+    reset() {
+        this.weaponList.forEach((weapon)=>{
+            weapon.removeFromParent();
+        })
+        this.weaponList = [];
     }
 }
 

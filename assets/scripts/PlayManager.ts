@@ -1,8 +1,9 @@
-import { _decorator, Component, Node, Vec2, Vec3, director } from 'cc';
+import { _decorator, Component, Node, Vec2, Vec3, director,CCInteger,Label } from 'cc';
 import {  HitManager } from './HitManager';
 import { Background } from './Background';
 import { Duck } from './Duck';
 import { Suction } from './Suction';
+import { BossAttack } from './BossAttack';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayManager')
@@ -23,8 +24,29 @@ export class PlayManager extends Component {
         this.resetDuckPos();
     }
 
+    @property(CCInteger)
+    bossBlood:number = 2;
+    
+    @property({
+        type:Label,
+        tooltip:'boss血量'
+    })
+    bossBloodLabel:Label = null;
+
+    @property(CCInteger)
+    collectTarget:number = 5;
+
+    // 羽毛ui
+    @property({
+        type:Label
+    })
+    maoLabel:Label = null;
+
+    duckWeaponCount:number = 0;
     start() {
         this.resetDuckPos();
+        // @ts-ignore
+        window.PlayManager = this;
     }
 
     update(deltaTime: number) {
@@ -41,6 +63,7 @@ export class PlayManager extends Component {
     play() {
         // 重置所有组件的状态;
         console.log('开始游戏,重置状态')
+        this.duckWeaponCount = 0;
         this.resetDuckPos();
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
@@ -62,6 +85,7 @@ export class PlayManager extends Component {
         if (suctionComp) {
             suctionComp.reset();
         }
+        this.hideBoss();
     }
 
     resetDuckPos() {
@@ -74,6 +98,76 @@ export class PlayManager extends Component {
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.stopThrow();
+            setTimeout(()=>{
+                const boss = this.node.getChildByName('boss')
+                if (boss) {
+                    boss.active = true;
+                }
+                const UI = this.node.getChildByName('UI');
+                if(UI) {
+                    const bossBlood = UI.getChildByName('bossBlood')
+                    if (bossBlood) {
+                        bossBlood.active = true;
+                    }
+                }
+            })
+        }
+        // 调用background jump到boss那里
+    }
+
+    hideBoss() {
+        setTimeout(()=>{
+            const boss = this.node.getChildByName('boss')
+            if (boss) {
+                boss.active = false;
+                const bossAttack = boss.getComponent(BossAttack);
+                if (bossAttack) {
+                    bossAttack.reset();
+                }
+            }
+            const UI = this.node.getChildByName('UI');
+            if(UI) {
+                const bossBlood = UI.getChildByName('bossBlood')
+                if (bossBlood) {
+                    bossBlood.active = false;
+                }
+            }
+        })
+    }
+
+    onBossHit() {
+        this.bossBlood--;
+        if (this.bossBloodLabel) {
+            this.bossBloodLabel.string = `${this.bossBlood}`;
+        }
+        if (this.bossBlood === 0) {
+            // @ts-ignore
+            window.GameManager.stopGame(true);
+        }
+    }
+
+    updateCollected(count :number) {
+        console.log('收集物数量：',count);
+        if (count >= this.collectTarget) {
+            this.duckWeaponCount = count;
+            this.showBoss();
+        }
+        if (this.maoLabel) {
+            const str = `X ${count}`
+            this.maoLabel.string = str;
+        }
+    }
+
+    duckAttack() {
+        if(this.duckWeaponCount > 1) {
+            this.duckWeaponCount--;
+            if (this.maoLabel) {
+                const str = `X ${this.duckWeaponCount}`
+                this.maoLabel.string = str;
+            }
+        }else {
+            // @ts-ignore
+            window.GameManager.stopGame(false);
         }
     }
 }
