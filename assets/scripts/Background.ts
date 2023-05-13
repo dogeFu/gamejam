@@ -4,11 +4,11 @@ const { ccclass, property } = _decorator;
 @ccclass('Background')
 export class Background extends Component {
 
-    public x: number = 0;  
-    public y: number = 0; 
+    private x: number = 0;  
+    private y: number = 0; 
 
-    public initX: number = 0;  
-    public initY: number = 0; 
+    private initX: number = 0;  
+    private initY: number = 0; 
 
     @property
     public speed: number = 1;  
@@ -33,15 +33,13 @@ export class Background extends Component {
         }else{
             this.y += this.speed;
         }
-
-        this.node.setPosition(this.x, this.y);
     }
 
-    setLeft(value: number){
+    setLeft(value: number) {
         this.left = value;
     }
 
-    setTop(value: number){
+    setTop(value: number) {
         this.top = value;
     }
 }

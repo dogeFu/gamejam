@@ -1,4 +1,4 @@
-import { _decorator, Component, Enum, Node } from 'cc';
+import { _decorator, Component, Enum, Node, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 export enum Direction {
@@ -11,44 +11,42 @@ export enum Direction {
 @ccclass('Suction')
 export class Suction extends Component {
 
+    public pause: boolean = false;
+    public destinationPosition = new Vec2();
+
     @property({type: Enum(Direction)})
-    public direction: Direction= Direction.RIGHT;  
+    public direction: Direction= Direction.LEFT;  
 
     @property
     public speed: number = 1;  
-    public pause: boolean = false;
 
     start() {
 
     }
 
     update(deltaTime: number) {
-        if(this.pause){
+        if(this.pause) {
             return;
         }
 
-        let x = this.node.position.x;
-        let y = this.node.position.y;
-
         if(this.direction === Direction.RIGHT){
-            x += this.speed;
+            this.destinationPosition.x += this.speed;
         }
 
         if(this.direction === Direction.LEFT){
-            x -= this.speed;
+            this.destinationPosition.x -= this.speed;
         }
 
         if(this.direction === Direction.TOP){
-            y += this.speed;
+            this.destinationPosition.y += this.speed;
         }
 
         if(this.direction === Direction.BOTTOM){
-            y -= this.speed;
+            this.destinationPosition.y -= this.speed;
         }
 
-        this.node.setPosition(x, y);
 
-        window.aaa = this;
+        this.node.setPosition(this.destinationPosition.x, this.destinationPosition.y);
     }
 }
 
