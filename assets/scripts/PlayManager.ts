@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, Node, Vec2, Vec3,director } from 'cc';
 import {  HitManager } from './HitManager';
 import { Background } from './Background';
 import { Duck } from './Duck';
@@ -39,8 +39,7 @@ export class PlayManager extends Component {
         if (hitManager) {
             hitManager.reset();
         }
-        const background = this.node.getChildByName('Background');
-        const backgroundComp = background.getComponent(Background);
+        const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
             backgroundComp.reset();
         }
