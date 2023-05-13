@@ -11,7 +11,7 @@ export enum Direction {
 @ccclass('Suction')
 export class Suction extends Component {
 
-    public pause: boolean = false;
+    public pause: boolean = true;
     public destinationPosition = new Vec3();
 
     @property({type: Enum(Direction)})

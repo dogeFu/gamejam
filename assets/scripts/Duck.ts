@@ -21,11 +21,9 @@ export class Duck extends Component {
     public destinationPosition = new Vec3();
     
     start() {
-        this.destinationPosition.x = this.node.position.x;
-        this.destinationPosition.y = this.node.position.y;
-
         this.SuctionComponent = this.getComponent(Suction);
         this.SuctionComponent.destinationPosition = this.destinationPosition;
+        this.resetDestinationPosition();
 
         this.AnimationComponent = this.getComponent(Animation);
 
@@ -52,6 +50,12 @@ export class Duck extends Component {
         }
     }
 
+    resetDestinationPosition() {
+        this.destinationPosition.x = this.node.position.x;
+        this.destinationPosition.y = this.node.position.y;
+        this.SuctionComponent.pause = false;
+    }
+
     flyUp() {
         this.destinationPosition.y += this.step;
         this.fly();
@@ -68,12 +72,10 @@ export class Duck extends Component {
         this.destinationPosition.x += this.step;
         this.fly();
     }
-
     fly() {
         this.AnimationComponent.stop();
 
-        const SuctionComponent = this.SuctionComponent;
-
+        const DUCK = this;
         this.SuctionComponent.pause = true;
 
         tween(this.node.position).to(this.duration, new Vec3(this.destinationPosition.x, this.destinationPosition.y, 0), {
@@ -81,8 +83,8 @@ export class Duck extends Component {
             onUpdate: (target:Vec3, ratio:number) => {
                 this.node.position = target;
             },
-            onComplete(){
-                SuctionComponent.pause = false;
+            onComplete() {
+                DUCK.resetDestinationPosition();
             },
         }).start();
 
