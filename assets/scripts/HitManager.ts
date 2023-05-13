@@ -1,5 +1,6 @@
 import { _decorator, CCInteger, Component, Node,
-    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,Label } from 'cc';
+    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,ParticleSystem } from 'cc';
+import { Collector } from './Collector';
 const { ccclass, property } = _decorator;
 
 const width = 1280;
@@ -96,10 +97,13 @@ export class HitManager extends Component {
     }
 
     hitCollector(collector:Node) {
+        // collector.removeFromParent();
         this.collectorList.splice(this.collectorList.indexOf(collector),1);
-        collector.removeFromParent();
+        const comp = collector.getComponent(Collector);
+        if (comp) {
+            comp.collected()
+        }
         this.updateCollector(1);
-        
     }
 
     hitBarrier(barrier:Node,die:boolean) {
