@@ -13,15 +13,14 @@ export class Background extends Component {
     @property
     public speed: number = 1;  
 
-    @property
+    private maxTop = 2160;
     public left: number = 0;
-
-    @property
-    public top: number = 2160;
+    public top: number = 0;
 
     start() {
-        this.x = this.initX = this.node.position.x;
-        this.y = this.initY = this.node.position.y;
+        this.initX = this.node.position.x;
+        this.initY = this.node.position.y;
+        this.reset();
     }
 
     update(deltaTime: number) {
@@ -46,6 +45,12 @@ export class Background extends Component {
 
     setTop(value: number) {
         this.top = value;
+    }
+
+    reset() {
+        this.x = this.initX;
+        this.y = this.initY
+        this.top = this.maxTop;
     }
 }
 

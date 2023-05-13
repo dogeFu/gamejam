@@ -40,9 +40,9 @@ export class PlayManager extends Component {
             hitManager.reset();
         }
         const background = this.node.getChildByName('Background');
-        const comp = background.getComponent(Background);
-        if (comp) {
-            comp.setTop(0)
+        const backgroundComp = background.getComponent(Background);
+        if (backgroundComp) {
+            backgroundComp.reset();
         }
 
         const duckComp = this.duck?.getComponent(Duck);
