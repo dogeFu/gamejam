@@ -52,10 +52,6 @@ export class Background extends Component {
 
     play() {
         this.pause = false;
-
-        setTimeout(()=>{
-            this.toBoss();
-        },1000)
     }
 
     stop() {
