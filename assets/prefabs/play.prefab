@@ -360,8 +360,8 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": 545.914,
-      "y": 262.186,
+      "x": 387.935,
+      "y": 100.9,
       "z": 0
     }
   },
@@ -422,7 +422,7 @@
     "propertyPath": [
       "_active"
     ],
-    "value": true
+    "value": false
   },
   {
     "__type__": "CCPropertyOverrideInfo",

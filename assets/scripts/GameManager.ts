@@ -11,7 +11,7 @@ export class GameManager extends Component {
     @property(Node)
     playRoot:Node = null;
 
-
+    handle:any;
 
     start() {
         // @ts-ignore
@@ -24,20 +24,31 @@ export class GameManager extends Component {
 
     stopGame(win:boolean) {
         console.log('游戏结束');
+        if (this.handle) return;
         // 结束游戏
         if (this.playRoot) {
-            this.playRoot.active = false;
             const playManager = this.playRoot.getComponent(PlayManager);
             playManager.stop(win);
         }
-        if (this.loginRoot) {
-            this.loginRoot.active = true;
-            const loginUiManager = this.loginRoot.getComponent(LoginUiManager);
-            loginUiManager.stopGame(win);
-        }
+        this.handle = setTimeout(()=>{
+            if (this.loginRoot) {
+                this.loginRoot.active = true;
+                const loginUiManager = this.loginRoot.getComponent(LoginUiManager);
+                loginUiManager.stopGame(win);
+            }
+            if (this.playRoot) {
+                this.playRoot.active = false;
+            }
+            this.handle = null
+        },1000)
     }
 
     playGame() {
+        if (this.handle) {
+            clearTimeout(this.handle)
+            this.handle = null;
+        }
+        this.handle = null;
         console.log('游戏开始');
         // 开始游戏
         if (this.loginRoot) {

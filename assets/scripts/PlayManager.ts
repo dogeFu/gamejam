@@ -66,16 +66,18 @@ export class PlayManager extends Component {
     }
 
     stop(win:boolean) {
-        const backgroundComp =  director.getScene().getComponentInChildren(Background);
-        if (backgroundComp) {
-            backgroundComp.stop();
-        }
         if(!win) {
             // 播放死亡动画
             this.playDuckAnim('die')
-            // 可能要等播完再往下执行
         }
-        this.hideBoss()
+        setTimeout(()=>{
+            const backgroundComp =  director.getScene().getComponentInChildren(Background);
+            if (backgroundComp) {
+                backgroundComp.stop();
+            }
+            
+            this.hideBoss()
+        },800)
     }
 
     play() {
@@ -193,10 +195,14 @@ export class PlayManager extends Component {
         if (count >= this.collectTarget) {
             this.duckWeaponCount = count;
             this.showBoss();
-        }
+        } 
         if (this.maoLabel) {
             const str = `X ${count}`
             this.maoLabel.string = str;
+        }
+        if(count <0) {
+            // @ts-ignore
+            window.GameManager.stopGame(false); 
         }
     }
 
