@@ -116,7 +116,7 @@ export class BossAttack extends Component {
 
     getStartPos() {
         const pos = this.node.position;
-        const x = Math.random()* this.area.x;
+        const x = Math.random()* this.area.x - 200;
         const y = Math.random()* this.area.y;
         return new Vec3(pos.x+x,pos.y+y,0);
     }
