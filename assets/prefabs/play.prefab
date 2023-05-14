@@ -1970,6 +1970,14 @@
       {
         "__uuid__": "9eecf05c-4c8c-489b-8d2f-becad5631e8d",
         "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "2c6d3e78-2ae6-4679-bd2e-e154fc61dfd4",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "3f4a43e0-a19c-41b8-9f2a-2efaab2aa860",
+        "__expectedType__": "cc.AudioClip"
       }
     ],
     "_id": ""

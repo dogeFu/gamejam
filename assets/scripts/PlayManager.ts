@@ -73,14 +73,11 @@ export class PlayManager extends Component {
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.stopThrow();
-        }
-        
-        const backgroundComp =  director.getScene().getComponentInChildren(Background);
-        if (backgroundComp) {
+
             if(!win) {
-                backgroundComp.playBackGroundAudio(4);
+                hitManager.AudioComponent.playEffect(4);
             }else{
-                backgroundComp.playBackGroundAudio(3);
+                hitManager.AudioComponent.playEffect(3);
             }
         }
 
@@ -252,7 +249,7 @@ export class PlayManager extends Component {
         }
         if (this.duckWeaponCount <= 0) {
             // @ts-ignore
-            window.GameManager.stopGame(false,'被boss打死了鸭');
+            window.GameManager.stopGame(false,'鸭被打死了');
         }
     }
 

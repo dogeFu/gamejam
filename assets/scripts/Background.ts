@@ -133,8 +133,6 @@ export class Background extends Component {
         if(index !== 0) {
             const nextAudio = {
                 1: 2, // to boss
-                3: 0, // win
-                4: 0, // lost
             }
 
             if(nextAudio[index] === undefined) {

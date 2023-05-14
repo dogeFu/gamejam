@@ -1044,14 +1044,6 @@
       {
         "__uuid__": "3fbfdb9a-10f9-44e2-b53d-8fa3846153c5",
         "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "2c6d3e78-2ae6-4679-bd2e-e154fc61dfd4",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "3f4a43e0-a19c-41b8-9f2a-2efaab2aa860",
-        "__expectedType__": "cc.AudioClip"
       }
     ],
     "_id": ""
