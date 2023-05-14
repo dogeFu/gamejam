@@ -1,8 +1,8 @@
-import { _decorator, Component, Node, Prefab,instantiate } from 'cc';
+import { _decorator, Component, Node,Prefab,instantiate } from 'cc';
 const { ccclass, property } = _decorator;
 
-@ccclass('Collector')
-export class Collector extends Component {
+@ccclass('Barrier')
+export class Barrier extends Component {
     @property(Prefab)
     eff:Prefab = null;
     
@@ -29,12 +29,9 @@ export class Collector extends Component {
         }else {
             this.node.removeFromParent();
         }
-
-        
     }
-
     start() {
-        
+
     }
 
     update(deltaTime: number) {

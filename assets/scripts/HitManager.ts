@@ -1,6 +1,7 @@
 import { _decorator, CCInteger, Component, Node,
     Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,ParticleSystem } from 'cc';
 import { Collector } from './Collector';
+import { Barrier } from './Barrier';
 const { ccclass, property } = _decorator;
 
 import { Audios } from './Audios';
@@ -105,7 +106,7 @@ export class HitManager extends Component {
         this.collectorList.splice(this.collectorList.indexOf(collector),1);
         const comp = collector.getComponent(Collector);
         if (comp) {
-            comp.collected()
+            comp.hit()
         }
         this.updateCollector(1);
         this.AudioComponent.playEffect(0);
@@ -114,7 +115,11 @@ export class HitManager extends Component {
     hitBarrier(barrier:Node,die:boolean) {
         // 障碍物
         this.barrierList.splice(this.barrierList.indexOf(barrier),1);
-        barrier.removeFromParent();
+        // barrier.removeFromParent();
+        const comp = barrier.getComponent(Barrier);
+        if (comp) {
+            comp.hit()
+        }
         this.AudioComponent.playEffect(1);
         if (die) {
             // @ts-ignore
