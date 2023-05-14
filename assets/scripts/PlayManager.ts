@@ -196,7 +196,7 @@ export class PlayManager extends Component {
 
     // 
     duckAttack() {
-        if(this.duckWeaponCount > 1) {
+        if(this.duckWeaponCount >= 1) {
             this.duckWeaponCount--;
             if (this.maoLabel) {
                 const str = `X ${this.duckWeaponCount}`
