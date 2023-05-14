@@ -27,6 +27,8 @@ export class PlayManager extends Component {
     @property(CCInteger)
     bossBlood:number = 2;
     
+    _bossBlood:number = 2;
+
     @property({
         type:Label,
         tooltip:'boss血量'
@@ -44,6 +46,7 @@ export class PlayManager extends Component {
 
     duckWeaponCount:number = 0;
     start() {
+        this._bossBlood = this.bossBlood;
         this.resetDuckPos();
         // @ts-ignore
         window.PlayManager = this;
@@ -69,6 +72,7 @@ export class PlayManager extends Component {
         // 重置所有组件的状态;
         console.log('开始游戏,重置状态')
         this.duckWeaponCount = 0;
+        this._bossBlood = this.bossBlood;
         this.resetDuckPos();
         this.playDuckAnim('fly');
         const hitManager = this.node.getComponent(HitManager);
@@ -119,6 +123,10 @@ export class PlayManager extends Component {
             })
         }
         // 调用background jump到boss那里
+        const backgroundComp =  director.getScene().getComponentInChildren(Background);
+        if (backgroundComp) {
+            backgroundComp.toBoss();
+        }
     }
 
     hideBoss() {
@@ -138,15 +146,18 @@ export class PlayManager extends Component {
                     bossBlood.active = false;
                 }
             }
+            if (this.bossBloodLabel) {
+                this.bossBloodLabel.string = `${this._bossBlood}`;
+            }
         })
     }
 
     onBossHit() {
-        this.bossBlood--;
+        this._bossBlood--;
         if (this.bossBloodLabel) {
-            this.bossBloodLabel.string = `${this.bossBlood}`;
+            this.bossBloodLabel.string = `${this._bossBlood}`;
         }
-        if (this.bossBlood === 0) {
+        if (this._bossBlood === 0) {
             // @ts-ignore
             window.GameManager.stopGame(true);
         }

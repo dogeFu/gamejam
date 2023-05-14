@@ -221,12 +221,14 @@ export class HitManager extends Component {
         this.throwSwitch = false;
         if (this.addBarrierHandle) {
             clearTimeout(this.addBarrierHandle)
+            this.addBarrierHandle = null;
         }
         if (this.addCollectorHandle) {
             clearTimeout(this.addCollectorHandle)
+            this.addCollectorHandle = null;
         }
-        this.collectorList.forEach(node=>node.removeFromParent())
-        this.barrierList.forEach(node=>node.removeFromParent())
+        this.collectorList.forEach(node=>node.setParent(null))
+        this.barrierList.forEach(node=>node.setParent(null))
         this.collectorList = [];
         this.barrierList = [];
         if (this.barrierDieNode) {
@@ -245,28 +247,31 @@ export class HitManager extends Component {
         if (this.collectorList.length < this.collectorNum) {
             this.addCollector();
         }
-        this.collectorList.forEach((collector) => {
-            // 根据收集物速度移动
+        const cLength = this.collectorList.length;
+        for (let index = cLength - 1; index >=0; index--) {
+            const collector = this.collectorList[index];
             collector.setPosition(new Vec3(collector.position.x - this.collectorSpeed,collector.position.y,0));
             // 超出屏幕后销毁
             if (collector.position.x < - width/2 -10) {
-                this.collectorList.splice(this.collectorList.indexOf(collector),1);
+                this.collectorList.splice(index,1);
                 collector.removeFromParent();
             }
-        });
+        }
+ 
 
         if (this.barrierList.length < this.barrierNum) {
             this.addBarrier();
         }
-        this.barrierList.forEach((barrier) => {
-            // 根据障碍物速度移动
+        const bLength = this.barrierList.length;
+        for (let index = bLength - 1; index >=0; index--) {
+            const barrier = this.barrierList[index];
             barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed,barrier.position.y,0));
             // 超出屏幕后销毁
             if (barrier.position.x < - width/2 -10) {
+                this.barrierList.splice(index,1);
                 barrier.removeFromParent();
-                this.barrierList.splice(this.barrierList.indexOf(barrier),1);
             }
-        });
+        }
 
         if(this.barrierDieNode) {
             const barrier = this.barrierDieNode;
