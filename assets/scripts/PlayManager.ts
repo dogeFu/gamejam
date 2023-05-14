@@ -138,8 +138,16 @@ export class PlayManager extends Component {
         // 调用background jump到boss那里
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
+            const suctionComp = this.duck?.getComponent(Suction);
+            const speed = suctionComp?.speed;
+            if (suctionComp) {
+                suctionComp.speed = 0;
+            }
             // 跳转到boss之后
             backgroundComp.toBoss(()=>{
+                if (suctionComp) {
+                    suctionComp.speed = speed;
+                }
                 const duckComp = this.duck?.getComponent(Duck);
                 if (duckComp && backgroundComp) {
                     duckComp.toBoss();
