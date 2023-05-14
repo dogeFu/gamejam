@@ -51,10 +51,6 @@ export class Background extends Component {
     }
 
     reset() {
-        setTimeout(()=>{
-            this.toBoss();
-        }, 5000)
-
         this.x = this.initX;
         this.y = this.initY
         this.top = this.maxTop;
