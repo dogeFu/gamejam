@@ -24,13 +24,13 @@ export class BossAttack extends Component {
 
     @property({
         type:Vec2,
-        tooltip:'子弹区间'
+        tooltip:'子弹发射起始范围区间'
     })
     area:Vec2 = new Vec2(100,100);
 
     @property({
         type:CCInteger,
-        tooltip:'发射间隔（最大）'
+        tooltip:'子弹发射间隔[0,该值]'
     })
     timeout:number = 2000;
 

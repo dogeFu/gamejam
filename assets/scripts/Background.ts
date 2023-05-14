@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, tween } from 'cc';
+import { _decorator, Component, Node, Vec3, tween,CCInteger } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { Audios } from './Audios';
@@ -16,7 +16,10 @@ export class Background extends Component {
 
     public pause: boolean = true;
 
-    @property
+    @property({
+        type:CCInteger,
+        tooltip:'背景移动速度'
+    })
     public speed: number = 1;
 
     private maxTop = 2160;

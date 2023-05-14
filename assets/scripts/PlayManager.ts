@@ -14,7 +14,10 @@ export class PlayManager extends Component {
     @property(Vec2)
     _startPos:Vec2 = new Vec2(0,0);
 
-    @property(Vec2)
+    @property({
+        type:Vec2,
+        tooltip:'玩家初始位置'
+    })
     get startPos () {
         return this._startPos;
     }
@@ -24,18 +27,24 @@ export class PlayManager extends Component {
         this.resetDuckPos();
     }
 
-    @property(CCInteger)
+    @property({
+        type:CCInteger,
+        tooltip:'boss血量上限'
+    })
     bossBlood:number = 2;
     
     _bossBlood:number = 2;
 
     @property({
         type:Label,
-        tooltip:'boss血量'
+        tooltip:'boss血量label'
     })
     bossBloodLabel:Label = null;
 
-    @property(CCInteger)
+    @property({
+        type:CCInteger,
+        tooltip:'需要收集的羽毛数量'
+    })
     collectTarget:number = 5;
 
     // 羽毛ui
