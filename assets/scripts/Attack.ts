@@ -54,6 +54,8 @@ export class Attack extends Component {
 
     shot() {
         if (!this.weaponNode) {
+            // 判断是否还有剩余的羽毛
+
             this.weaponNode = instantiate(this.weapon);
             this.weaponNode.parent = this.root;
             this.weaponNode.position = new Vec3(this.node.position);
@@ -62,6 +64,9 @@ export class Attack extends Component {
             if (collider){
                 collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             }
+            // 更新UI
+            // @ts-ignore
+            window.PlayManager.duckAttack();
         }
     }
 

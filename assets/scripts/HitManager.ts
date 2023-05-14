@@ -1,5 +1,6 @@
 import { _decorator, CCInteger, Component, Node,
-    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,Label } from 'cc';
+    Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,ParticleSystem } from 'cc';
+import { Collector } from './Collector';
 const { ccclass, property } = _decorator;
 
 import { Audios } from './Audios';
@@ -8,15 +9,6 @@ const width = 1280;
 
 @ccclass('HitManager')
 export class HitManager extends Component {
-    @property({
-        type:Label
-    })
-    maoLabel:Label = null;
-
-    @property({
-        type:Node
-    })
-    canvas:Node = null;
 
     @property({
         type:Prefab,
@@ -26,9 +18,15 @@ export class HitManager extends Component {
 
     @property({
         type:Prefab,
-        tooltip:'障碍物预制体'
+        tooltip:'障碍物-减羽毛'
     })
     barrierAsset:Prefab = null;
+
+    @property({
+        type:Prefab,
+        tooltip:'障碍物-死亡'
+    })
+    barrierDieAsset:Prefab = null;
 
     @property({
         type:CCInteger,
@@ -59,7 +57,7 @@ export class HitManager extends Component {
     addCollectorHandle:any;
     addBarrierHandle:any;
     collected:number = 0;
-
+    barrierDieNode :Node = null;
     public throwSwitch = false;
 
     public AudioComponent: Audios;
@@ -77,7 +75,9 @@ export class HitManager extends Component {
                 // 收集物
                 this.hitCollector(hitNode);
             }else if(hitNode.name === 'barrier') {
-                this.hitBarrier(hitNode);
+                this.hitBarrier(hitNode,false);
+            }else if (hitNode.name === 'barrierDie') {
+                this.hitBarrier(hitNode,true);
             }
         },
         collector:(selfCollider,otherCollider,contact)=>{
@@ -89,26 +89,40 @@ export class HitManager extends Component {
         barrier:(selfCollider,otherCollider,contact)=>{
             const hitNode = otherCollider.node
             if(hitNode.name === 'duck') {
-                this.hitBarrier(selfCollider.node)
+                this.hitBarrier(selfCollider.node,false)
             }
         },
-
+        barrierDie:(selfCollider,otherCollider,contact)=>{
+            const hitNode = otherCollider.node
+            if(hitNode.name === 'duck') {
+                this.hitBarrier(selfCollider.node,true)
+            }
+        },
     }
 
     hitCollector(collector:Node) {
+        // collector.removeFromParent();
         this.collectorList.splice(this.collectorList.indexOf(collector),1);
-        collector.removeFromParent();
+        const comp = collector.getComponent(Collector);
+        if (comp) {
+            comp.collected()
+        }
         this.updateCollector(1);
         this.AudioComponent.playEffect(0);
     }
 
-    hitBarrier(barrier:Node) {
+    hitBarrier(barrier:Node,die:boolean) {
         // 障碍物
         this.barrierList.splice(this.barrierList.indexOf(barrier),1);
         barrier.removeFromParent();
-        // @ts-ignore
-        window.GameManager.stopGame(false);
         this.AudioComponent.playEffect(1);
+        if (die) {
+            // @ts-ignore
+            window.GameManager.stopGame(false);
+        }else {
+            // 羽毛减1
+            this.updateCollector(-1);
+        }
     }
 
     start() {
@@ -147,7 +161,7 @@ export class HitManager extends Component {
         // 1秒内随机时间生成一个收集物
         this.addCollectorHandle = setTimeout(() => {
             const collector = instantiate(this.collectorAsset);
-            this.canvas?.addChild(collector);
+            this.node?.addChild(collector);
             
             const y = this.getY();
             collector.setPosition(new Vec3(width/2,y,0));// 都从右边出来
@@ -165,10 +179,22 @@ export class HitManager extends Component {
             const barrier = instantiate(this.barrierAsset);
             const y = this.getY();
             barrier.setPosition(new Vec3(width/2,y,0));// 都从右边出来
-            this.canvas?.addChild(barrier);
+            this.node?.addChild(barrier);
             this.barrierList.push(barrier);
             this.addBarrierHandle = null;
         },this.random() * 1000);
+        
+        // 生产会挂掉的障碍物
+        setTimeout(() => {
+            if (!this.throwSwitch) return;
+            if (!this.barrierDieNode && this.barrierDieAsset) {
+                const barrier = instantiate(this.barrierDieAsset);
+                const y = this.getY();
+                barrier.setPosition(new Vec3(width/2,y,0));// 都从右边出来
+                this.node?.addChild(barrier);
+                this.barrierDieNode = barrier;
+            }
+        },this.random() * 2000);
     }
 
     // 生成[-360,360]y轴随机位置
@@ -186,13 +212,8 @@ export class HitManager extends Component {
 
     updateCollector(count:number) {
         this.collected+=count;
-        const str = `X ${this.collected}`
-        if (this.maoLabel) {
-            this.maoLabel.string = str;
-        }
         // @ts-ignore
-        window.GameManager.updateCollected(this.collected)
-        
+        window.PlayManager?.updateCollected(this.collected)
     }
 
     // 停止投送
@@ -208,6 +229,10 @@ export class HitManager extends Component {
         this.barrierList.forEach(node=>node.removeFromParent())
         this.collectorList = [];
         this.barrierList = [];
+        if (this.barrierDieNode) {
+            this.barrierDieNode.removeFromParent();
+            this.barrierDieNode = null;
+        }
     }
 
     // 开始投送
@@ -242,6 +267,16 @@ export class HitManager extends Component {
                 this.barrierList.splice(this.barrierList.indexOf(barrier),1);
             }
         });
+
+        if(this.barrierDieNode) {
+            const barrier = this.barrierDieNode;
+            barrier.setPosition(new Vec3(barrier.position.x - this.barrierSpeed/2,barrier.position.y,0));
+            // 超出屏幕后销毁
+            if (barrier.position.x < - width/2 -10) {
+                barrier.removeFromParent();
+                this.barrierDieNode = null;
+            }
+        }
     }
 }
 

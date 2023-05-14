@@ -29,9 +29,11 @@ export class LoginUiManager extends Component {
     stopGame(win:boolean) {
         if (win) {
             this.winTip.active = true;
+            this.stopTip.active = false;
         }
         else {
             this.stopTip.active = true;
+            this.winTip.active = false;
         }
         this.title.active = false;
     }
