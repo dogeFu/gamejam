@@ -2,6 +2,8 @@ import { _decorator, CCInteger, Component, Node,
     Prefab,instantiate,Vec3,PhysicsSystem2D,Contact2DType,Label } from 'cc';
 const { ccclass, property } = _decorator;
 
+import { Audios } from './Audios';
+
 const width = 1280;
 
 @ccclass('HitManager')
@@ -60,6 +62,8 @@ export class HitManager extends Component {
 
     public throwSwitch = false;
 
+    public AudioComponent: Audios;
+
     reset() {
         this.stopThrow();
         this.updateCollector(-this.collected);
@@ -95,7 +99,7 @@ export class HitManager extends Component {
         this.collectorList.splice(this.collectorList.indexOf(collector),1);
         collector.removeFromParent();
         this.updateCollector(1);
-        
+        this.AudioComponent.playEffect(0);
     }
 
     hitBarrier(barrier:Node) {
@@ -104,6 +108,7 @@ export class HitManager extends Component {
         barrier.removeFromParent();
         // @ts-ignore
         window.GameManager.stopGame(false);
+        this.AudioComponent.playEffect(1);
     }
 
     start() {
@@ -113,6 +118,8 @@ export class HitManager extends Component {
             // PhysicsSystem2D.instance.on(Contact2DType.PRE_SOLVE, this.onPreSolve, this);
             // PhysicsSystem2D.instance.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
         }
+
+        this.AudioComponent = this.getComponent(Audios);
     }
 
     // 

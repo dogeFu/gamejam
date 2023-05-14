@@ -40,10 +40,16 @@
       },
       {
         "__id__": 61
+      },
+      {
+        "__id__": 69
+      },
+      {
+        "__id__": 71
       }
     ],
     "_prefab": {
-      "__id__": 69
+      "__id__": 73
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1036,6 +1042,54 @@
     "fileId": "5fpYLFrERNLpdv1DGjOC3f"
   },
   {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 70
+    },
+    "_clip": null,
+    "_loop": false,
+    "_playOnAwake": false,
+    "_volume": 1,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "24M0qcy0VEgqjTy2Gh6Orc"
+  },
+  {
+    "__type__": "52cffwsHutO/rJtR0vVkGXO",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 72
+    },
+    "clips": [
+      {
+        "__uuid__": "4ed59a01-c89e-4076-804d-73a8ce4dc676",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "d3249f16-e5bb-4293-a9a7-9c8b7ee702e9",
+        "__expectedType__": "cc.AudioClip"
+      }
+    ],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "ecaX3BN8VBNqb04NcZztTg"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -1047,16 +1101,16 @@
     "instance": null,
     "targetOverrides": [
       {
-        "__id__": 70
+        "__id__": 74
       },
       {
-        "__id__": 73
+        "__id__": 77
       },
       {
-        "__id__": 76
+        "__id__": 80
       },
       {
-        "__id__": 78
+        "__id__": 82
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -1077,7 +1131,7 @@
       "__id__": 31
     },
     "sourceInfo": {
-      "__id__": 71
+      "__id__": 75
     },
     "propertyPath": [
       "_target"
@@ -1086,7 +1140,7 @@
       "__id__": 31
     },
     "targetInfo": {
-      "__id__": 72
+      "__id__": 76
     }
   },
   {
@@ -1107,7 +1161,7 @@
       "__id__": 31
     },
     "sourceInfo": {
-      "__id__": 74
+      "__id__": 78
     },
     "propertyPath": [
       "_target"
@@ -1116,7 +1170,7 @@
       "__id__": 31
     },
     "targetInfo": {
-      "__id__": 75
+      "__id__": 79
     }
   },
   {
@@ -1144,7 +1198,7 @@
       "__id__": 31
     },
     "targetInfo": {
-      "__id__": 77
+      "__id__": 81
     }
   },
   {
@@ -1159,7 +1213,7 @@
       "__id__": 31
     },
     "sourceInfo": {
-      "__id__": 79
+      "__id__": 83
     },
     "propertyPath": [
       "_target"
@@ -1168,7 +1222,7 @@
       "__id__": 31
     },
     "targetInfo": {
-      "__id__": 80
+      "__id__": 84
     }
   },
   {

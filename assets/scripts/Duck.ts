@@ -20,7 +20,6 @@ export class Duck extends Component {
 
     public destinationPosition = new Vec3();
 
-    
     start() {
         this.SuctionComponent = this.getComponent(Suction);
         this.SuctionComponent.destinationPosition = this.destinationPosition;
@@ -28,6 +27,7 @@ export class Duck extends Component {
 
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }
+    
     onDestroy() {
         input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     }

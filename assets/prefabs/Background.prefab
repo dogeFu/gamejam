@@ -37,10 +37,16 @@
       },
       {
         "__id__": 34
+      },
+      {
+        "__id__": 36
+      },
+      {
+        "__id__": 38
       }
     ],
     "_prefab": {
-      "__id__": 36
+      "__id__": 40
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -650,6 +656,69 @@
     "fileId": "87aSCtc6xCjLjev5r+rZeR"
   },
   {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 37
+    },
+    "_clip": {
+      "__uuid__": "48c18982-d2d1-4b4f-8df1-68d51e2fe042",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "_loop": true,
+    "_playOnAwake": true,
+    "_volume": 1,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "63MmkjyPtH6rO+MJymzst3"
+  },
+  {
+    "__type__": "52cffwsHutO/rJtR0vVkGXO",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 39
+    },
+    "clips": [
+      {
+        "__uuid__": "48c18982-d2d1-4b4f-8df1-68d51e2fe042",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "0dd90d20-16de-4fc6-91ff-9d92c9235020",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "3fbfdb9a-10f9-44e2-b53d-8fa3846153c5",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "2c6d3e78-2ae6-4679-bd2e-e154fc61dfd4",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "89ed7914-841c-4abb-8e3b-5a6a851ce778",
+        "__expectedType__": "cc.AudioClip"
+      }
+    ],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "6a9igJdgBNI5Iny4yQlvoP"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -661,7 +730,7 @@
     "instance": null,
     "targetOverrides": [
       {
-        "__id__": 37
+        "__id__": 41
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -676,7 +745,7 @@
       "__id__": 18
     },
     "sourceInfo": {
-      "__id__": 38
+      "__id__": 42
     },
     "propertyPath": [
       "_trailModule",
@@ -686,7 +755,7 @@
       "__id__": 18
     },
     "targetInfo": {
-      "__id__": 39
+      "__id__": 43
     }
   },
   {
