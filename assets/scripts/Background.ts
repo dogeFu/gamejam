@@ -26,7 +26,7 @@ export class Background extends Component {
         type:CCInteger,
         tooltip:'没见 boss 前的最高位置'
     })
-    public flyTop: number = 1440;
+    public flyTop: number = 2160;
 
     @property({
         type:CCFloat,
@@ -38,7 +38,13 @@ export class Background extends Component {
         type:CCInteger,
         tooltip:'到 boss 最高位置'
     })
-    public bossTop: number = 2160;
+    public bossTop: number = 4936;
+
+    @property({
+        type:CCInteger,
+        tooltip:'重力反转提示的高度'
+    })
+    public revertTop: number = 2300;
 
     public top: number = 0;
 
@@ -92,8 +98,9 @@ export class Background extends Component {
         this.stop();
 
         this.playBackGroundAudio(1);
+        // 目标高度
         this.top = this.bossTop;
-        this.y = this.initY - this.flyTop;
+        this.y = this.initY - this.revertTop;
         tween(this.node.position).to(this.flyToBossDuration, new Vec3(this.initX, this.y, 0), {
             easing: "sineOut",
             onUpdate: (target: Vec3, ratio: number) => {
@@ -102,7 +109,7 @@ export class Background extends Component {
             onComplete: () => {
                 setTimeout(()=>{
                     this.y = this.initY - this.bossTop;
-                    tween(this.node.position).to(0.6, new Vec3(this.initX, this.y, 0), {
+                    tween(this.node.position).to(0.8, new Vec3(this.initX, this.y, 0), {
                         easing: "smooth",
                         onUpdate: (target: Vec3, ratio: number) => {
                             this.node.position = target;
@@ -111,7 +118,7 @@ export class Background extends Component {
                             this.play();
                         }
                     }).start();
-                }, 1200)
+                }, 1800)
             }
         }).start();
     }
