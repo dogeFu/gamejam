@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab,instantiate } from 'cc';
+import { _decorator, Component, Node, Prefab,instantiate,Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Collector')
@@ -18,6 +18,7 @@ export class Collector extends Component {
             const particle = instantiate(this.eff);
             particle.parent = this.node.parent;
             particle.setPosition(pos);
+            particle.setScale(0.3,0.3,1);
             setTimeout(()=>{
                 if (particle) {
                     particle.removeFromParent();

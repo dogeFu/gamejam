@@ -18,6 +18,7 @@ export class Barrier extends Component {
             const particle = instantiate(this.eff);
             particle.parent = this.node.parent;
             particle.setPosition(pos);
+            particle.setScale(0.3,0.3,1);
             setTimeout(()=>{
                 if (particle) {
                     particle.removeFromParent();
