@@ -216,7 +216,7 @@ export class PlayManager extends Component {
         }
         if(count <0) {
             // @ts-ignore
-            window.GameManager.stopGame(false,'被打死了鸭'); 
+            window.GameManager.stopGame(false,'鸭被打死了'); 
         }
     }
 
@@ -233,7 +233,7 @@ export class PlayManager extends Component {
 
             const hitManager = this.node.getComponent(HitManager);
             if (hitManager) {
-                hitManager.AudioComponent.playEffect(3);
+                hitManager.AudioComponent.playEffect(2);
             }
         }else {
             // @ts-ignore
