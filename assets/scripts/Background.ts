@@ -94,7 +94,7 @@ export class Background extends Component {
     }
 
     toBoss(callback:Function) {
-        this.stop();
+        this.pause = true;
 
         this.playBackGroundAudio(1);
         // 目标高度

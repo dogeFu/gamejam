@@ -74,6 +74,12 @@ export class PlayManager extends Component {
         if (hitManager) {
             hitManager.stopThrow();
         }
+
+        const backgroundComp =  director.getScene().getComponentInChildren(Background);
+        if (backgroundComp) {
+            backgroundComp.playBackGroundAudio(4);
+        }
+
         setTimeout(()=>{
             const backgroundComp =  director.getScene().getComponentInChildren(Background);
             if (backgroundComp) {
