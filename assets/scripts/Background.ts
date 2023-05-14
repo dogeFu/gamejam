@@ -94,7 +94,7 @@ export class Background extends Component {
         this.reset();
     }
 
-    toBoss() {
+    toBoss(callback:Function) {
         this.stop();
 
         this.playBackGroundAudio(1);
@@ -116,6 +116,7 @@ export class Background extends Component {
                         },
                         onComplete: () => {
                             this.play();
+                            callback();
                         }
                     }).start();
                 }, 1800)
