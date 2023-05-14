@@ -219,6 +219,10 @@
       "__uuid__": "6fe0fdb1-2ac8-4358-b8f9-bab70e2ec11a",
       "__expectedType__": "cc.Prefab"
     },
+    "weaponEff": {
+      "__uuid__": "50ab3872-767b-458f-be0a-171d21583fe2",
+      "__expectedType__": "cc.Prefab"
+    },
     "bullet": {
       "__uuid__": "101e3cf1-38f1-4d92-8638-0f889ae8addd",
       "__expectedType__": "cc.Prefab"

@@ -124,9 +124,9 @@ export class PlayManager extends Component {
                 }
                 const UI = this.node.getChildByName('UI');
                 if(UI) {
-                    const bossBlood = UI.getChildByName('bossBlood')
-                    if (bossBlood) {
-                        bossBlood.active = true;
+                    const bossLevel = UI.getChildByName('bossLevel')
+                    if (bossLevel) {
+                        bossLevel.active = true;
                     }
                 }
             })
@@ -150,9 +150,9 @@ export class PlayManager extends Component {
             }
             const UI = this.node.getChildByName('UI');
             if(UI) {
-                const bossBlood = UI.getChildByName('bossBlood')
-                if (bossBlood) {
-                    bossBlood.active = false;
+                const bossLevel = UI.getChildByName('bossLevel')
+                if (bossLevel) {
+                    bossLevel.active = false;
                 }
             }
             if (this.bossBloodLabel) {
@@ -196,6 +196,18 @@ export class PlayManager extends Component {
             // todo 如果小于0且没击中则stopGame;
     
         }else {
+            // @ts-ignore
+            window.GameManager.stopGame(false);
+        }
+    }
+
+    duckWasHit() {
+        this.duckWeaponCount--
+        if (this.maoLabel) {
+            const str = `X ${this.duckWeaponCount}`
+            this.maoLabel.string = str;
+        }
+        if (this.duckWeaponCount <= 0) {
             // @ts-ignore
             window.GameManager.stopGame(false);
         }
