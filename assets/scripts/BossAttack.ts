@@ -6,6 +6,12 @@ const radio = 720/1280;
 export class BossAttack extends Component {
     @property({
         type:Prefab,
+        tooltip:'击中特效'
+    })
+    eff:Prefab = null;
+
+    @property({
+        type:Prefab,
         tooltip:'子弹预制体'
     })
     bullet:Prefab = null;
@@ -59,6 +65,18 @@ export class BossAttack extends Component {
             otherNode = selfNode === boss ? otherNode : selfNode;
         }
         if(otherNode.name === 'weapon') {
+            // 播放boss被击中特效
+            if (this.eff) {
+                const pos = otherNode.position;
+                const particle = instantiate(this.eff);
+                particle.parent = otherNode.parent;
+                particle.setPosition(pos);
+                setTimeout(()=>{
+                    if (particle) {
+                        particle.removeFromParent();
+                    }
+                },100)
+            }
             // @ts-ignore
             window.PlayManager.onBossHit();
         }
