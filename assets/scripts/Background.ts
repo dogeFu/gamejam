@@ -58,7 +58,7 @@ export class Background extends Component {
         this.x = this.initX;
         this.y = this.initY
         this.top = this.maxTop;
-
+        this.playBackGroundAudio(0);
         this.stop();
     }
 

@@ -15,6 +15,10 @@ export class Audios extends Component {
   }
 
   playBackGround(index: number) {
+    if(!this.audioSource) {
+      return;
+    }
+
     const clip: AudioClip = this.clips[index];
     if(!clip) {
       return;
@@ -28,6 +32,10 @@ export class Audios extends Component {
   }
 
   playEffect(index: number) {
+    if(!this.audioSource) {
+      return;
+    }
+    
     const clip: AudioClip = this.clips[index];
     if(!clip) {
       return;
