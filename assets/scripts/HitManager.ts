@@ -120,12 +120,13 @@ export class HitManager extends Component {
         if (comp) {
             comp.hit()
         }
-        this.AudioComponent.playEffect(1);
+        
         if (die) {
             // @ts-ignore
             window.GameManager.stopGame(false);
         }else {
             // 羽毛减1
+            this.AudioComponent.playEffect(1);
             this.updateCollector(-1);
         }
     }

@@ -90,7 +90,6 @@ export class Background extends Component {
     }
 
     stop() {
-        this.playBackGroundAudio(4);
         this.reset();
     }
 
