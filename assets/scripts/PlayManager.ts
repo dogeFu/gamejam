@@ -65,7 +65,7 @@ export class PlayManager extends Component {
         
     }
 
-    stop(win:boolean) { 
+    stop(win:boolean) {
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
             backgroundComp.stop();
@@ -75,6 +75,7 @@ export class PlayManager extends Component {
             this.playDuckAnim('die')
             // 可能要等播完再往下执行
         }
+        this.hideBoss()
     }
 
     play() {
@@ -117,19 +118,6 @@ export class PlayManager extends Component {
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.stopThrow();
-            setTimeout(()=>{
-                const boss = this.node.getChildByName('boss')
-                if (boss) {
-                    boss.active = true;
-                }
-                const UI = this.node.getChildByName('UI');
-                if(UI) {
-                    const bossLevel = UI.getChildByName('bossLevel')
-                    if (bossLevel) {
-                        bossLevel.active = true;
-                    }
-                }
-            })
         }
         // 调用background jump到boss那里
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
@@ -141,6 +129,21 @@ export class PlayManager extends Component {
         if (duckComp && backgroundComp) {
             setTimeout(() => {
                 duckComp.toBoss();
+                const boss = this.node.getChildByName('boss')
+                if (boss) {
+                    boss.active = true;
+                    const bossAttack = boss.getComponent(BossAttack);
+                    if (bossAttack) {
+                        bossAttack.startAttack = true;
+                    }
+                }
+                const UI = this.node.getChildByName('UI');
+                if(UI) {
+                    const bossLevel = UI.getChildByName('bossLevel')
+                    if (bossLevel) {
+                        bossLevel.active = true;
+                    }
+                }
             },backgroundComp.flyToBossDuration * 1000)
         }
     }
