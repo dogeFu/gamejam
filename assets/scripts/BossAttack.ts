@@ -46,6 +46,7 @@ export class BossAttack extends Component {
     })
     timeout:number = 2000;
 
+    startAttack = false;
     weaponList:Node[] = [];
     handle:any;
 
@@ -82,6 +83,7 @@ export class BossAttack extends Component {
     }
 
     shot() {
+        if (!this.startAttack) return;
         if (this.weaponList.length < this.maxBulletCount) {
             if (this.handle) return;
             this.handle = setTimeout(()=>{
@@ -174,6 +176,7 @@ export class BossAttack extends Component {
     }
 
     reset() {
+        this.startAttack = false;
         this.weaponList.forEach((weapon)=>{
             weapon.removeFromParent();
         })
