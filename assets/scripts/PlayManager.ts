@@ -122,30 +122,36 @@ export class PlayManager extends Component {
         // 调用background jump到boss那里
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
-            backgroundComp.toBoss();
+            // 跳转到boss之后
+            backgroundComp.toBoss(()=>{
+                const duckComp = this.duck?.getComponent(Duck);
+                if (duckComp && backgroundComp) {
+                    // setTimeout(() => {
+                    duckComp.toBoss();
+                    // setTimeout(()=>{
+
+                    const boss = this.node.getChildByName('boss')
+                    if (boss) {
+                        boss.active = true;
+                        const bossAttack = boss.getComponent(BossAttack);
+                        if (bossAttack) {
+                            bossAttack.startAttack = true;
+                        }
+                    }
+                    const UI = this.node.getChildByName('UI');
+                    if(UI) {
+                        const bossLevel = UI.getChildByName('bossLevel')
+                        if (bossLevel) {
+                            bossLevel.active = true;
+                        }
+                    }
+                    // },2000)
+                    // },backgroundComp.flyToBossDuration * 1000)
+                }
+            });
         }
 
-        const duckComp = this.duck?.getComponent(Duck);
-        if (duckComp && backgroundComp) {
-            setTimeout(() => {
-                duckComp.toBoss();
-                const boss = this.node.getChildByName('boss')
-                if (boss) {
-                    boss.active = true;
-                    const bossAttack = boss.getComponent(BossAttack);
-                    if (bossAttack) {
-                        bossAttack.startAttack = true;
-                    }
-                }
-                const UI = this.node.getChildByName('UI');
-                if(UI) {
-                    const bossLevel = UI.getChildByName('bossLevel')
-                    if (bossLevel) {
-                        bossLevel.active = true;
-                    }
-                }
-            },backgroundComp.flyToBossDuration * 1000)
-        }
+        
     }
 
     hideBoss() {
