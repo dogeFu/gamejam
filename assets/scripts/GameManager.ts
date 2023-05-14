@@ -22,7 +22,7 @@ export class GameManager extends Component {
 
     }
 
-    stopGame(win:boolean) {
+    stopGame(win:boolean,reason = '') {
         console.log('游戏结束');
         if (this.handle) return;
         // 结束游戏
@@ -34,7 +34,7 @@ export class GameManager extends Component {
             if (this.loginRoot) {
                 this.loginRoot.active = true;
                 const loginUiManager = this.loginRoot.getComponent(LoginUiManager);
-                loginUiManager.stopGame(win);
+                loginUiManager.stopGame(win,reason);
             }
             if (this.playRoot) {
                 this.playRoot.active = false;

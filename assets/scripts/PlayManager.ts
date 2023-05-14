@@ -70,6 +70,10 @@ export class PlayManager extends Component {
             // 播放死亡动画
             this.playDuckAnim('die')
         }
+        const hitManager = this.node.getComponent(HitManager);
+        if (hitManager) {
+            hitManager.stopThrow();
+        }
         setTimeout(()=>{
             const backgroundComp =  director.getScene().getComponentInChildren(Background);
             if (backgroundComp) {
@@ -128,10 +132,7 @@ export class PlayManager extends Component {
             backgroundComp.toBoss(()=>{
                 const duckComp = this.duck?.getComponent(Duck);
                 if (duckComp && backgroundComp) {
-                    // setTimeout(() => {
                     duckComp.toBoss();
-                    // setTimeout(()=>{
-
                     const boss = this.node.getChildByName('boss')
                     if (boss) {
                         boss.active = true;
@@ -147,8 +148,6 @@ export class PlayManager extends Component {
                             bossLevel.active = true;
                         }
                     }
-                    // },2000)
-                    // },backgroundComp.flyToBossDuration * 1000)
                 }
             });
         }
@@ -202,7 +201,7 @@ export class PlayManager extends Component {
         }
         if(count <0) {
             // @ts-ignore
-            window.GameManager.stopGame(false); 
+            window.GameManager.stopGame(false,'被打死了鸭'); 
         }
     }
 
@@ -219,7 +218,7 @@ export class PlayManager extends Component {
     
         }else {
             // @ts-ignore
-            window.GameManager.stopGame(false);
+            window.GameManager.stopGame(false,'羽毛用光了鸭');
         }
     }
 
@@ -231,7 +230,7 @@ export class PlayManager extends Component {
         }
         if (this.duckWeaponCount <= 0) {
             // @ts-ignore
-            window.GameManager.stopGame(false);
+            window.GameManager.stopGame(false,'被boss打死了鸭');
         }
     }
 
