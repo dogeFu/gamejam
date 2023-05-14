@@ -100,7 +100,18 @@ export class Background extends Component {
                 this.node.position = target;
             },
             onComplete: () => {
-                this.play();
+                setTimeout(()=>{
+                    this.y = this.initY - this.bossTop;
+                    tween(this.node.position).to(0.6, new Vec3(this.initX, this.y, 0), {
+                        easing: "smooth",
+                        onUpdate: (target: Vec3, ratio: number) => {
+                            this.node.position = target;
+                        },
+                        onComplete: () => {
+                            this.play();
+                        }
+                    }).start();
+                }, 1200)
             }
         }).start();
     }

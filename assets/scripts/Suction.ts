@@ -55,6 +55,10 @@ export class Suction extends Component {
     setDirectionTop(){
         this.direction = Direction.TOP;
     }
+
+    setDirectionBottom(){
+        this.direction = Direction.BOTTOM;
+    }
 }
 
 

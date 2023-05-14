@@ -87,7 +87,10 @@ export class Duck extends Component {
     }
 
     reset() {
-        this.resetDestinationPosition()
+        if(this.SuctionComponent) {
+            this.SuctionComponent.setDirectionBottom();
+        }
+        this.resetDestinationPosition();
     }
 
     toBoss() {
