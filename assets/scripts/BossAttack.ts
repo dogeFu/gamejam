@@ -12,6 +12,12 @@ export class BossAttack extends Component {
 
     @property({
         type:Prefab,
+        tooltip:'boss武器被击中特效'
+    })
+    weaponEff:Prefab = null;
+
+    @property({
+        type:Prefab,
         tooltip:'子弹预制体'
     })
     bullet:Prefab = null;
@@ -65,18 +71,6 @@ export class BossAttack extends Component {
             otherNode = selfNode === boss ? otherNode : selfNode;
         }
         if(otherNode.name === 'weapon') {
-            // 播放boss被击中特效
-            if (this.eff) {
-                const pos = otherNode.position;
-                const particle = instantiate(this.eff);
-                particle.parent = otherNode.parent;
-                particle.setPosition(pos);
-                setTimeout(()=>{
-                    if (particle) {
-                        particle.removeFromParent();
-                    }
-                },100)
-            }
             // @ts-ignore
             window.PlayManager.onBossHit();
         }
@@ -108,7 +102,7 @@ export class BossAttack extends Component {
                         }
                         if(otherNode.name === 'duck' || otherNode.name === 'weapon') {
                             console.log('boss 武器命中duck');
-                            this.hideWeapon(weapon);
+                            this.hideWeapon(weapon,otherNode.name);
                             contact.disable = true;
                         }
                     }, this);
@@ -137,10 +131,46 @@ export class BossAttack extends Component {
         })
     }
 
-    hideWeapon(weapon:Node) {
+    hideWeapon(weapon:Node,name='') {
+        // 击中了鸭子
+        if(name === 'duck') {
+            this.showHitEff(weapon);
+            // 击中鸭子，要减少鸭子的一次羽毛
+            // @ts-ignore
+            window.PlayManager.duckWasHit();
+        } else if (name === 'weapon') {
+            this.showWeaponEff(weapon);
+        }
         weapon.removeFromParent();
         this.weaponList.splice(this.weaponList.indexOf(weapon),1);
-        console.log('移除boss子弹');
+    }
+
+    showWeaponEff(target:Node) {
+        if (this.weaponEff) {
+            const pos = target.position;
+            const particle = instantiate(this.weaponEff);
+            particle.parent = target.parent;
+            particle.setPosition(pos);
+            setTimeout(()=>{
+                if (particle) {
+                    particle.removeFromParent();
+                }
+            },100)
+        }
+    }
+
+    showHitEff(target:Node){
+        if (this.eff) {
+            const pos = target.position;
+            const particle = instantiate(this.eff);
+            particle.parent = target.parent;
+            particle.setPosition(pos);
+            setTimeout(()=>{
+                if (particle) {
+                    particle.removeFromParent();
+                }
+            },100)
+        }
     }
 
     reset() {

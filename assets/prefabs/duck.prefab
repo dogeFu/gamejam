@@ -1130,16 +1130,17 @@
     "__prefab": {
       "__id__": 53
     },
+    "eff": {
+      "__uuid__": "6fe0fdb1-2ac8-4358-b8f9-bab70e2ec11a",
+      "__expectedType__": "cc.Prefab"
+    },
+    "root": null,
     "weapon": {
       "__uuid__": "445daf16-2e86-4fa2-b4fa-84aeb92a520b",
       "__expectedType__": "cc.Prefab"
     },
     "speed": 1,
-    "targetPos": {
-      "__type__": "cc.Vec2",
-      "x": 640,
-      "y": 360
-    },
+    "bossBode": null,
     "_id": ""
   },
   {

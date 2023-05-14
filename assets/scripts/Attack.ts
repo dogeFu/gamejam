@@ -4,6 +4,12 @@ const { ccclass, property } = _decorator;
 @ccclass('Attack')
 export class Attack extends Component {
     @property({
+        type:Prefab,
+        tooltip:'击中特效'
+    })
+    eff:Prefab = null;
+
+    @property({
         type:Node,
         tooltip:'根节点，用来挂子弹'
     })
@@ -86,11 +92,25 @@ export class Attack extends Component {
         }
     }
     hideWeapon(hit:boolean) {
-        this.weaponNode.removeFromParent();
-        this.weaponNode = null;
         if(hit) {
             // 击中目标要更新状态
-            console.log('击中boss');
+            this.showHitEff(this.weaponNode)
+        }
+        this.weaponNode.removeFromParent();
+        this.weaponNode = null;
+    }
+
+    showHitEff(target:Node){
+        if (this.eff) {
+            const pos = target.position;
+            const particle = instantiate(this.eff);
+            particle.parent = target.parent;
+            particle.setPosition(pos);
+            setTimeout(()=>{
+                if (particle) {
+                    particle.removeFromParent();
+                }
+            },100)
         }
     }
 }
