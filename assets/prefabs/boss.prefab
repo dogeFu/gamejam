@@ -215,6 +215,10 @@
     "__prefab": {
       "__id__": 11
     },
+    "eff": {
+      "__uuid__": "6fe0fdb1-2ac8-4358-b8f9-bab70e2ec11a",
+      "__expectedType__": "cc.Prefab"
+    },
     "bullet": {
       "__uuid__": "101e3cf1-38f1-4d92-8638-0f889ae8addd",
       "__expectedType__": "cc.Prefab"
@@ -226,6 +230,7 @@
       "x": 200,
       "y": 200
     },
+    "timeout": 2000,
     "duckNode": null,
     "_id": ""
   },
