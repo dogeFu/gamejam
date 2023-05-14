@@ -123,7 +123,7 @@ export class HitManager extends Component {
         
         if (die) {
             // @ts-ignore
-            window.GameManager.stopGame(false);
+            window.GameManager.stopGame(false,'被撞死了鸭');
         }else {
             // 羽毛减1
             this.AudioComponent.playEffect(1);

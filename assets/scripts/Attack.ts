@@ -59,9 +59,9 @@ export class Attack extends Component {
     }
 
     shot() {
-        if (!this.weaponNode) {
-            // 判断是否还有剩余的羽毛
-
+        // 判断是否还有剩余的羽毛
+        // @ts-ignore
+        if (!this.weaponNode && window.PlayManager.duckWeaponCount !== 0) {
             this.weaponNode = instantiate(this.weapon);
             this.weaponNode.parent = this.root;
             this.weaponNode.position = new Vec3(this.node.position);
@@ -98,6 +98,12 @@ export class Attack extends Component {
         }
         this.weaponNode.removeFromParent();
         this.weaponNode = null;
+        // 打完了子弹，输了
+        // @ts-ignore
+        if(window.PlayManager.duckWeaponCount === 0) {
+            // @ts-ignore
+            window.PlayManager.duckAttack();
+        }
     }
 
     showHitEff(target:Node){

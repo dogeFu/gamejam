@@ -23,7 +23,7 @@ export class BoundChecker extends Component {
         const pos = this.target.position;
         if (pos.y < this.bottom || pos.y > this.top) {
             // @ts-ignore
-            window.GameManager.stopGame(false)
+            window.GameManager.stopGame(false,'触碰到了边界')
         }
     }
 }

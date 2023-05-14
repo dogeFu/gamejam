@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node,Label } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoginUiManager')
@@ -14,6 +14,11 @@ export class LoginUiManager extends Component {
     winTip:Node = null;
 
     @property({
+        type:Label
+    })
+    reason:Label = null;
+
+    @property({
         type:Node
     })
     title:Node = null;
@@ -26,12 +31,16 @@ export class LoginUiManager extends Component {
         
     }
 
-    stopGame(win:boolean) {
+    stopGame(win:boolean,str='') {
+        // console.log()
         if (win) {
             this.winTip.active = true;
             this.stopTip.active = false;
         }
         else {
+            if(this.reason) {
+                this.reason.string = str;
+            }   
             this.stopTip.active = true;
             this.winTip.active = false;
         }
