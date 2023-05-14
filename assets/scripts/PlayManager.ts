@@ -68,16 +68,20 @@ export class PlayManager extends Component {
     stop(win:boolean) {
         if(!win) {
             // 播放死亡动画
-            this.playDuckAnim('die')
+            this.playDuckAnim('die');
         }
         const hitManager = this.node.getComponent(HitManager);
         if (hitManager) {
             hitManager.stopThrow();
         }
-
+        
         const backgroundComp =  director.getScene().getComponentInChildren(Background);
         if (backgroundComp) {
-            backgroundComp.playBackGroundAudio(4);
+            if(!win) {
+                backgroundComp.playBackGroundAudio(4);
+            }else{
+                backgroundComp.playBackGroundAudio(3);
+            }
         }
 
         setTimeout(()=>{
@@ -221,7 +225,11 @@ export class PlayManager extends Component {
             }
             this.playDuckAnim('attack');
             // todo 如果小于0且没击中则stopGame;
-    
+
+            const hitManager = this.node.getComponent(HitManager);
+            if (hitManager) {
+                hitManager.AudioComponent.playEffect(3);
+            }
         }else {
             // @ts-ignore
             window.GameManager.stopGame(false,'羽毛用光了鸭');
