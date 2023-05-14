@@ -7,8 +7,6 @@ import { Suction } from './Suction';
 export class Duck extends Component {
     private SuctionComponent: Suction;
 
-    private AnimationComponent: Animation;
-
     @property
     public duration: number = 0.5;
 
@@ -90,6 +88,10 @@ export class Duck extends Component {
 
     reset() {
         this.resetDestinationPosition()
+    }
+
+    toBoss() {
+        this.SuctionComponent.setDirectionTop();
     }
 }
 
