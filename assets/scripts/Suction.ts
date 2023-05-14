@@ -51,6 +51,10 @@ export class Suction extends Component {
     reset() {
         // this.destinationPosition = new Vec3();
     }
+
+    setDirectionTop(){
+        this.direction = Direction.TOP;
+    }
 }
 
 

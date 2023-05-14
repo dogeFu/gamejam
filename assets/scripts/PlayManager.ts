@@ -136,6 +136,13 @@ export class PlayManager extends Component {
         if (backgroundComp) {
             backgroundComp.toBoss();
         }
+
+        const duckComp = this.duck?.getComponent(Duck);
+        if (duckComp && backgroundComp) {
+            setTimeout(() => {
+                duckComp.toBoss();
+            },backgroundComp.flyToBossDuration * 1000)
+        }
     }
 
     hideBoss() {
