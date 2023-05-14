@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, tween,CCInteger } from 'cc';
+import { _decorator, Component, Node, Vec3, tween,CCInteger, CCFloat } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { Audios } from './Audios';
@@ -22,7 +22,24 @@ export class Background extends Component {
     })
     public speed: number = 1;
 
-    private maxTop = 2160;
+    @property({
+        type:CCInteger,
+        tooltip:'没见 boss 前的最高位置'
+    })
+    public flyTop: number = 1440;
+
+    @property({
+        type:CCFloat,
+        tooltip:'剩余距离飞到 boss 前的时间'
+    })
+    public flyToBossDuration: number = 1.3;
+
+    @property({
+        type:CCInteger,
+        tooltip:'到 boss 最高位置'
+    })
+    public bossTop: number = 2160;
+
     public top: number = 0;
 
     public AudioComponent: Audios;
@@ -56,9 +73,10 @@ export class Background extends Component {
     reset() {
         this.x = this.initX;
         this.y = this.initY
-        this.top = this.maxTop;
-        this.playBackGroundAudio(0);
-        this.stop();
+        this.node.setPosition(this.x, this.y);
+
+        this.top = this.flyTop;
+        this.pause = true;
     }
 
     play() {
@@ -66,19 +84,24 @@ export class Background extends Component {
     }
 
     stop() {
-        this.pause = true;
+        this.playBackGroundAudio(4);
+        this.reset();
     }
 
     toBoss() {
         this.stop();
 
         this.playBackGroundAudio(1);
-
-        tween(this.node.position).to(2, new Vec3(this.initX, this.initY - this.maxTop, 0), {
+        this.top = this.bossTop;
+        this.y = this.initY - this.flyTop;
+        tween(this.node.position).to(this.flyToBossDuration, new Vec3(this.initX, this.y, 0), {
             easing: "sineOut",
             onUpdate: (target: Vec3, ratio: number) => {
                 this.node.position = target;
             },
+            onComplete: () => {
+                this.play();
+            }
         }).start();
     }
 
